@@ -30,7 +30,3 @@ const { data, error } = await client.chat({
 
 Please consult [CONTRIBUTING](./.github/CONTRIBUTING.md) for guidelines on contributing to this project.
 
-## Author
-
-**nanogpt-client** © [Kjetil Mehl](https://github.com/aspic), Released under the [Apache-2.0](./LICENSE) License.
-
