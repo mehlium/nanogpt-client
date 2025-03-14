@@ -1,21 +1,32 @@
 import { createChatCompletion, Options } from './sdk.gen.js'
-import { CreateChatCompletionData } from './types.gen.js'
+import { ChatModel, CreateChatCompletionData } from './types.gen.js'
 
 type APIKey = string
 
 export class NanoGPTClient {
-  apiKey: string
+  headers: Record<string, string>
+  defaultModel?: ChatModel
 
-  constructor(apiKey: APIKey) {
-    this.apiKey = apiKey
+  constructor(apiKey: APIKey, defaultModel?: ChatModel) {
+    this.headers = { Authorization: `Bearer: ${apiKey}` }
+    this.defaultModel = defaultModel
   }
 
   chat<ThrowOnError extends boolean = false>(
-    options: Options<CreateChatCompletionData, ThrowOnError>
+    options: Options<CreateChatCompletionData, ThrowOnError> | string
   ) {
+    if (typeof options === 'string') {
+      return createChatCompletion({
+        body: {
+          model: this.defaultModel,
+          messages: [{ role: 'user', content: options }]
+        },
+        headers: this.headers
+      })
+    }
     return createChatCompletion({
       ...options,
-      headers: { Authorization: `Bearer: ${this.apiKey}` }
+      headers: this.headers
     })
   }
 }
