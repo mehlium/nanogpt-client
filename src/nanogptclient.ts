@@ -19,7 +19,3 @@ export class NanoGPTClient {
     })
   }
 }
-
-export const foo = () => {
-  console.log('void')
-}
