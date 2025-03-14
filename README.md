@@ -29,4 +29,3 @@ const { data, error } = await client.chat({
 ## Contributing
 
 Please consult [CONTRIBUTING](./.github/CONTRIBUTING.md) for guidelines on contributing to this project.
-
