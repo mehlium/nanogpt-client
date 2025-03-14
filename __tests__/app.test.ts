@@ -3,7 +3,7 @@ import assert from 'node:assert'
 import { NanoGPTClient } from '../src/index.ts'
 import { client } from '../src/openapi-client/client.gen.ts'
 import { createClient } from '@hey-api/client-fetch'
-import successfulResponse from './__fixtures__/successful-response.json' assert { type: 'json' }
+import successfulResponse from './__fixtures__/successful-response.json' with { type: 'json' }
 import { mockResponse } from './test-utils.ts'
 
 describe('NanoGPTClient', () => {
