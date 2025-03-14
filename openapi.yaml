@@ -1,0 +1,363 @@
+openapi: 3.1.0
+info:
+  title: NanoGPT API
+  description: API for interacting with NanoGPT's text and image generation services.
+  version: 1.0.0
+servers:
+  - url: https://nano-gpt.com/api/v1
+    description: Primary API endpoint
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API_KEY
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: api-key
+  parameters:
+    TemperatureParam:
+      name: temperature
+      in: query
+      required: false
+      description: Controls randomness (0 to 2).
+      schema:
+        type: number
+        format: float
+    MaxTokensParam:
+      name: max_tokens
+      in: query
+      required: false
+      description: Maximum number of tokens to generate.
+      schema:
+        type: integer
+    StreamParam:
+      name: stream
+      in: query
+      required: false
+      description: Whether to stream the response.
+      schema:
+        type: boolean
+    StopParam:
+      name: stop
+      in: query
+      required: false
+      description: Up to 4 sequences where the API will stop generating.
+      schema:
+        type: array
+        items:
+          type: string
+    TopPParam:
+      name: top_p
+      in: query
+      required: false
+      description: Nucleus sampling probability.
+      schema:
+        type: number
+        format: float
+    TopKParam:
+      name: top_k
+      in: query
+      required: false
+      description: Limits the next token selection to the K most likely tokens.
+      schema:
+        type: integer
+    FrequencyPenaltyParam:
+      name: frequency_penalty
+      in: query
+      required: false
+      description: Reduces token repetition (-2.0 to 2.0).
+      schema:
+        type: number
+        format: float
+    PresencePenaltyParam:
+      name: presence_penalty
+      in: query
+      required: false
+      description: Increases likelihood of new topics (-2.0 to 2.0).
+      schema:
+        type: number
+        format: float
+    LogitBiasParam:
+      name: logit_bias
+      in: query
+      required: false
+      description: Modify the probability of specified tokens.
+      schema:
+        type: object
+    UserParam:
+      name: user
+      in: query
+      required: false
+      description: Unique identifier for the end-user.
+      schema:
+        type: string
+    NParam:
+      name: n
+      in: query
+      required: false
+      description: Number of choices to generate.
+      schema:
+        type: integer
+    SeedParam:
+      name: seed
+      in: query
+      required: false
+      description: Seed for deterministic sampling.
+      schema:
+        type: integer
+    ResponseFormatParam:
+      name: response_format
+      in: query
+      required: false
+      description: Format for the generated output.
+      schema:
+        type: string
+    ToolsParam:
+      name: tools
+      in: query
+      required: false
+      description: List of tools the model may call.
+      schema:
+        type: array
+        items:
+          type: string
+    ToolChoiceParam:
+      name: tool_choice
+      in: query
+      required: false
+      description: Controls how functions are called by the model.
+      schema:
+        type: string
+  schemas:
+    ChatModel:
+      type: string
+      enum:
+        - chatgpt-4o-latest
+        - claude-3-5-sonnet-20241022
+        - yi-lightning
+        - deepseek-chat
+        - gemini
+    ImageModel:
+      type: string
+      enum:
+        - dall-e
+        - stable-diffusion
+        - dreamshaper_8_93211.safetensors
+    Message:
+      type: object
+      properties:
+        role:
+          type: string
+          description: The role of the message sender (e.g., 'user', 'assistant').
+        content:
+          type: string
+          description: The content of the message.
+paths:
+  /chat/completions:
+    post:
+      summary: Create a chat completion
+      description: Generate a chat-based completion using the specified parameters.
+      operationId: createChatCompletion
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  $ref: "#/components/schemas/ChatModel"
+                messages:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Message"
+                temperature:
+                  $ref: "#/components/parameters/TemperatureParam"
+                max_tokens:
+                  $ref: "#/components/parameters/MaxTokensParam"
+                stream:
+                  $ref: "#/components/parameters/StreamParam"
+                stop:
+                  $ref: "#/components/parameters/StopParam"
+                top_p:
+                  $ref: "#/components/parameters/TopPParam"
+                top_k:
+                  $ref: "#/components/parameters/TopKParam"
+                frequency_penalty:
+                  $ref: "#/components/parameters/FrequencyPenaltyParam"
+                presence_penalty:
+                  $ref: "#/components/parameters/PresencePenaltyParam"
+                logit_bias:
+                  $ref: "#/components/parameters/LogitBiasParam"
+                user:
+                  $ref: "#/components/parameters/UserParam"
+                n:
+                  $ref: "#/components/parameters/NParam"
+                seed:
+                  $ref: "#/components/parameters/SeedParam"
+                response_format:
+                  $ref: "#/components/parameters/ResponseFormatParam"
+                tools:
+                  $ref: "#/components/parameters/ToolsParam"
+                tool_choice:
+                  $ref: "#/components/parameters/ToolChoiceParam"
+      responses:
+        "200":
+          description: Successful chat completion response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique identifier for the completion.
+                  object:
+                    type: string
+                    description: Typically 'chat.completion'.
+                  created:
+                    type: integer
+                    description: Timestamp when the completion was created.
+                  model:
+                    $ref: "#/components/schemas/ChatModel"
+                  choices:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        index:
+                          type: integer
+                          description: Index of the generated choice.
+                        message:
+                          $ref: "#/components/schemas/Message"
+                        finish_reason:
+                          type: string
+                          description: Reason the generation was stopped.
+                  usage:
+                    type: object
+                    properties:
+                      prompt_tokens:
+                        type: integer
+                        description: Number of tokens in the prompt.
+                      completion_tokens:
+                        type: integer
+                        description: Number of tokens in the completion.
+                      total_tokens:
+                        type: integer
+                        description: Total tokens used.
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Details about the invalid request.
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Authentication error.
+        "500":
+          description: Server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Server-side error details.
+  /image/generations:
+    post:
+      summary: Generate an image
+      description: Create an image based on the provided prompt and parameters.
+      operationId: generateImage
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  $ref: "#/components/schemas/ImageModel"
+                prompt:
+                  type: string
+                  description: Text prompt for image generation.
+                n:
+                  $ref: "#/components/parameters/NParam"
+                size:
+                  type: string
+                  description: Dimensions for the generated image (e.g., "256x256").
+                response_format:
+                  $ref: "#/components/parameters/ResponseFormatParam"
+                user:
+                  $ref: "#/components/parameters/UserParam"
+      responses:
+        "200":
+          description: Successful image generation response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    description: Timestamp of image creation.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: URL of the generated image.
+                        b64_json:
+                          type: string
+                          description: Base64-encoded JSON of the image.
+        "400":
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Details about the invalid request.
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Authentication error.
+        "500":
+          description: Server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Server-side error details.
