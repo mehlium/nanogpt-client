@@ -1,6 +1,9 @@
 # NanoGPT Client
 
-A custom implementation of the [NanoGPT API](https://nano-gpt.com/api). This aims to provide a typescript client wrapper for the API for both the Browser and Node environments.
+An unofficial implementation of the [NanoGPT API](https://nano-gpt.com/api). This library aims to provide
+a Typescript client for both browser and node environments. It's built on the inferred [OpenAPI spec](./openapi.yaml).
+
+**Note**: The API might change at any time which can render this client unusable, use at your own risk.
 
 ## Install
 
@@ -29,3 +32,4 @@ const { data, error } = await client.chat({
 ## Contributing
 
 Please consult [CONTRIBUTING](./.github/CONTRIBUTING.md) for guidelines on contributing to this project.
+
