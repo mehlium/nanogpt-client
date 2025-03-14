@@ -1,17 +1,18 @@
 import { test, describe, beforeEach, mock } from 'node:test'
 import assert from 'node:assert'
-import { add } from '../src/main.ts'
+import { NanoGPTClient } from '../src/index.ts'
 
-describe('CLI program', () => {
-
+// TODO: Real tests
+describe('NanoGPTClient', () => {
   beforeEach(() => {
     // Reset the mocks before each test
     mock.reset()
-  });
-
-  test('Program sums two arguments', async (t) => {
-    const result = await add(1, 1);
-    assert.strictEqual(result, 2);
   })
 
-});
+  test('new NanoGPTClient', async (t) => {
+    const nano = new NanoGPTClient('test-key')
+
+    assert.notEqual(nano, undefined)
+  })
+})
+
