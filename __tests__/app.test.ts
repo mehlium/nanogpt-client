@@ -26,6 +26,7 @@ describe('NanoGPTClient', () => {
     })
 
     assert.equal(data?.choices?.[0]?.message?.content, 'this is a test')
+    assert.equal(error, undefined)
   })
 })
 
