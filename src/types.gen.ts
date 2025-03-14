@@ -211,6 +211,21 @@ export type CreateChatCompletionResponses = {
        */
       total_tokens?: number
     }
+    nanoGPT?: {
+      /**
+       * Cost for running this query.
+       */
+      cost?: unknown
+      /**
+       * Number of input tokens
+       */
+      inputTokens?: number
+      /**
+       * Number of output tokens
+       */
+      outputTokens?: number
+      paymentSource?: 'XNO'
+    }
   }
 }
 

@@ -171,43 +171,43 @@ paths:
               type: object
               properties:
                 model:
-                  $ref: "#/components/schemas/ChatModel"
+                  $ref: '#/components/schemas/ChatModel'
                 messages:
                   type: array
                   items:
-                    $ref: "#/components/schemas/Message"
+                    $ref: '#/components/schemas/Message'
                 temperature:
-                  $ref: "#/components/parameters/TemperatureParam"
+                  $ref: '#/components/parameters/TemperatureParam'
                 max_tokens:
-                  $ref: "#/components/parameters/MaxTokensParam"
+                  $ref: '#/components/parameters/MaxTokensParam'
                 stream:
-                  $ref: "#/components/parameters/StreamParam"
+                  $ref: '#/components/parameters/StreamParam'
                 stop:
-                  $ref: "#/components/parameters/StopParam"
+                  $ref: '#/components/parameters/StopParam'
                 top_p:
-                  $ref: "#/components/parameters/TopPParam"
+                  $ref: '#/components/parameters/TopPParam'
                 top_k:
-                  $ref: "#/components/parameters/TopKParam"
+                  $ref: '#/components/parameters/TopKParam'
                 frequency_penalty:
-                  $ref: "#/components/parameters/FrequencyPenaltyParam"
+                  $ref: '#/components/parameters/FrequencyPenaltyParam'
                 presence_penalty:
-                  $ref: "#/components/parameters/PresencePenaltyParam"
+                  $ref: '#/components/parameters/PresencePenaltyParam'
                 logit_bias:
-                  $ref: "#/components/parameters/LogitBiasParam"
+                  $ref: '#/components/parameters/LogitBiasParam'
                 user:
-                  $ref: "#/components/parameters/UserParam"
+                  $ref: '#/components/parameters/UserParam'
                 n:
-                  $ref: "#/components/parameters/NParam"
+                  $ref: '#/components/parameters/NParam'
                 seed:
-                  $ref: "#/components/parameters/SeedParam"
+                  $ref: '#/components/parameters/SeedParam'
                 response_format:
-                  $ref: "#/components/parameters/ResponseFormatParam"
+                  $ref: '#/components/parameters/ResponseFormatParam'
                 tools:
-                  $ref: "#/components/parameters/ToolsParam"
+                  $ref: '#/components/parameters/ToolsParam'
                 tool_choice:
-                  $ref: "#/components/parameters/ToolChoiceParam"
+                  $ref: '#/components/parameters/ToolChoiceParam'
       responses:
-        "200":
+        '200':
           description: Successful chat completion response.
           content:
             application/json:
@@ -224,7 +224,7 @@ paths:
                     type: integer
                     description: Timestamp when the completion was created.
                   model:
-                    $ref: "#/components/schemas/ChatModel"
+                    $ref: '#/components/schemas/ChatModel'
                   choices:
                     type: array
                     items:
@@ -234,7 +234,7 @@ paths:
                           type: integer
                           description: Index of the generated choice.
                         message:
-                          $ref: "#/components/schemas/Message"
+                          $ref: '#/components/schemas/Message'
                         finish_reason:
                           type: string
                           description: Reason the generation was stopped.
@@ -250,7 +250,23 @@ paths:
                       total_tokens:
                         type: integer
                         description: Total tokens used.
-        "400":
+                  nanoGPT:
+                    type: object
+                    properties:
+                      cost:
+                        type: float
+                        description: Cost for running this query.
+                      inputTokens:
+                        type: integer
+                        description: Number of input tokens
+                      outputTokens:
+                        type: integer
+                        description: Number of output tokens
+                      paymentSource:
+                        type: string
+                        enum:
+                          - XNO
+        '400':
           description: Invalid request.
           content:
             application/json:
@@ -260,7 +276,7 @@ paths:
                   error:
                     type: string
                     description: Details about the invalid request.
-        "401":
+        '401':
           description: Unauthorized.
           content:
             application/json:
@@ -270,7 +286,7 @@ paths:
                   error:
                     type: string
                     description: Authentication error.
-        "500":
+        '500':
           description: Server error.
           content:
             application/json:
@@ -296,21 +312,21 @@ paths:
               type: object
               properties:
                 model:
-                  $ref: "#/components/schemas/ImageModel"
+                  $ref: '#/components/schemas/ImageModel'
                 prompt:
                   type: string
                   description: Text prompt for image generation.
                 n:
-                  $ref: "#/components/parameters/NParam"
+                  $ref: '#/components/parameters/NParam'
                 size:
                   type: string
                   description: Dimensions for the generated image (e.g., "256x256").
                 response_format:
-                  $ref: "#/components/parameters/ResponseFormatParam"
+                  $ref: '#/components/parameters/ResponseFormatParam'
                 user:
-                  $ref: "#/components/parameters/UserParam"
+                  $ref: '#/components/parameters/UserParam'
       responses:
-        "200":
+        '200':
           description: Successful image generation response.
           content:
             application/json:
@@ -331,7 +347,7 @@ paths:
                         b64_json:
                           type: string
                           description: Base64-encoded JSON of the image.
-        "400":
+        '400':
           description: Invalid request.
           content:
             application/json:
@@ -341,7 +357,7 @@ paths:
                   error:
                     type: string
                     description: Details about the invalid request.
-        "401":
+        '401':
           description: Unauthorized.
           content:
             application/json:
@@ -351,7 +367,7 @@ paths:
                   error:
                     type: string
                     description: Authentication error.
-        "500":
+        '500':
           description: Server error.
           content:
             application/json:
