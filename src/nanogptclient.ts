@@ -1,15 +1,21 @@
-import { createChatCompletion, Options } from './sdk.gen.js'
-import { ChatModel, CreateChatCompletionData } from './types.gen.js'
+import { Client, createClient } from '@hey-api/client-fetch'
+import { createChatCompletion, Options } from './openapi-client/sdk.gen.js'
+import { ChatModel, CreateChatCompletionData } from './openapi-client/types.gen.js'
+import { client } from './openapi-client/client.gen.ts'
 
 type APIKey = string
 
 export class NanoGPTClient {
-  headers: Record<string, string>
   defaultModel?: ChatModel
+  client: Client
 
   constructor(apiKey: APIKey, defaultModel?: ChatModel) {
-    this.headers = { Authorization: `Bearer: ${apiKey}` }
     this.defaultModel = defaultModel
+
+    this.client = createClient({
+      ...client.getConfig(),
+      auth: () => `${apiKey}`
+    })
   }
 
   chat<ThrowOnError extends boolean = false>(
@@ -21,12 +27,12 @@ export class NanoGPTClient {
           model: this.defaultModel,
           messages: [{ role: 'user', content: options }]
         },
-        headers: this.headers
+        client: this.client
       })
     }
     return createChatCompletion({
       ...options,
-      headers: this.headers
+      client: options.client || this.client
     })
   }
 }
