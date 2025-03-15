@@ -35,3 +35,18 @@ export const MessageSchema = {
     }
   }
 } as const
+
+export const PaymentSourceSchema = {
+  type: 'string',
+  enum: ['XNO']
+} as const
+
+export const CostSchema = {
+  type: 'float',
+  description: 'Cost for running the query.'
+} as const
+
+export const RemainingBalanceSchema = {
+  type: 'float',
+  description: 'Remaining balance in wallet.'
+} as const
