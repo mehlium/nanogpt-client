@@ -39,10 +39,16 @@ export class NanoGPTClient {
         client: this.client
       })
     }
-    return createChatCompletion(options)
+    return createChatCompletion({
+      ...options,
+      client: options.client || this.client
+    })
   }
 
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
-    return generateImage(options)
+    return generateImage({
+      ...options,
+      client: options.client || this.client
+    })
   }
 }
