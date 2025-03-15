@@ -199,6 +199,17 @@ components:
         content:
           type: string
           description: The content of the message.
+    PaymentSource:
+      type: string
+      enum:
+        - XNO
+    Cost:
+      type: float
+      description: Cost for running the query.
+    RemainingBalance:
+      type: float
+      description: Remaining balance in wallet.
+
 paths:
   /v1/chat/completions:
     post:
@@ -299,8 +310,7 @@ paths:
                     type: object
                     properties:
                       cost:
-                        type: float
-                        description: Cost for running this query.
+                        $ref: '#/components/schemas/Cost'
                       inputTokens:
                         type: integer
                         description: Number of input tokens
@@ -308,9 +318,7 @@ paths:
                         type: integer
                         description: Number of output tokens
                       paymentSource:
-                        type: string
-                        enum:
-                          - XNO
+                        $ref: '#/components/schemas/PaymentSource'
         '400':
           description: Invalid request.
           content:
@@ -403,6 +411,13 @@ paths:
                         b64_json:
                           type: string
                           description: Base64-encoded JSON of the image.
+                  cost:
+                    $ref: '#/components/schemas/Cost'
+                  paymentSource:
+                    $ref: '#/components/schemas/PaymentSource'
+                  remainingBalance:
+                    $ref: '#/components/schemas/RemainingBalance'
+
         '400':
           description: Invalid request.
           content:

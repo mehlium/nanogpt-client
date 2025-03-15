@@ -39,6 +39,22 @@ export type Message = {
   content?: string
 }
 
+export type PaymentSource = 'XNO'
+
+export const PaymentSource = {
+  XNO: 'XNO'
+} as const
+
+/**
+ * Cost for running the query.
+ */
+export type Cost = unknown
+
+/**
+ * Remaining balance in wallet.
+ */
+export type RemainingBalance = unknown
+
 /**
  * Controls randomness (0 to 2).
  */
@@ -244,10 +260,7 @@ export type CreateChatCompletionResponses = {
       total_tokens?: number
     }
     nanoGPT?: {
-      /**
-       * Cost for running this query.
-       */
-      cost?: unknown
+      cost?: Cost
       /**
        * Number of input tokens
        */
@@ -256,7 +269,7 @@ export type CreateChatCompletionResponses = {
        * Number of output tokens
        */
       outputTokens?: number
-      paymentSource?: 'XNO'
+      paymentSource?: PaymentSource
     }
   }
 }
@@ -336,6 +349,9 @@ export type GenerateImageResponses = {
        */
       b64_json?: string
     }>
+    cost?: Cost
+    paymentSource?: PaymentSource
+    remainingBalance?: RemainingBalance
   }
 }
 
