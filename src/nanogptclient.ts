@@ -8,17 +8,22 @@ import {
 import { client } from './openapi-client/client.gen.ts'
 
 type APIKey = string
+interface NanoGPTClientConfig {
+  apiKey: APIKey
+  defaultChatModel?: ChatModel
+  client?: Client
+}
 
 export class NanoGPTClient {
   defaultModel?: ChatModel
   client: Client
 
-  constructor(apiKey: APIKey, defaultModel?: ChatModel) {
-    this.defaultModel = defaultModel
+  constructor(config: NanoGPTClientConfig) {
+    this.defaultModel = config.defaultChatModel
 
     this.client = createClient({
-      ...client.getConfig(),
-      auth: () => `${apiKey}`
+      ...(config.client || client).getConfig(),
+      auth: () => `${config.apiKey}`
     })
   }
 
@@ -34,16 +39,10 @@ export class NanoGPTClient {
         client: this.client
       })
     }
-    return createChatCompletion({
-      ...options,
-      client: options.client || this.client
-    })
+    return createChatCompletion(options)
   }
 
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
-    return generateImage({
-      ...options,
-      client: options.client || this.client
-    })
+    return generateImage(options)
   }
 }

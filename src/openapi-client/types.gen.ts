@@ -165,7 +165,7 @@ export type CreateChatCompletionData = {
   }
   path?: never
   query?: never
-  url: '/chat/completions'
+  url: '/v1/chat/completions'
 }
 
 export type CreateChatCompletionErrors = {
@@ -342,5 +342,5 @@ export type GenerateImageResponses = {
 export type GenerateImageResponse = GenerateImageResponses[keyof GenerateImageResponses]
 
 export type ClientOptions = {
-  baseUrl: 'https://nano-gpt.com/api/v1' | (string & {})
+  baseUrl: 'https://nano-gpt.com/api' | (string & {})
 }
