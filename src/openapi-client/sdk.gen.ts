@@ -46,11 +46,11 @@ export const createChatCompletion = <ThrowOnError extends boolean = false>(
         type: 'http'
       },
       {
-        name: 'api-key',
+        name: 'x-api-key',
         type: 'apiKey'
       }
     ],
-    url: '/chat/completions',
+    url: '/v1/chat/completions',
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -73,11 +73,7 @@ export const generateImage = <ThrowOnError extends boolean = false>(
   >({
     security: [
       {
-        scheme: 'bearer',
-        type: 'http'
-      },
-      {
-        name: 'api-key',
+        name: 'x-api-key',
         type: 'apiKey'
       }
     ],

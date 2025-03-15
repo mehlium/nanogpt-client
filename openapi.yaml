@@ -4,7 +4,7 @@ info:
   description: API for interacting with NanoGPT's text and image generation services.
   version: 1.0.0
 servers:
-  - url: https://nano-gpt.com/api/v1
+  - url: https://nano-gpt.com/api
     description: Primary API endpoint
 components:
   securitySchemes:
@@ -15,7 +15,7 @@ components:
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: api-key
+      name: x-api-key
   parameters:
     TemperatureParam:
       name: temperature
@@ -200,7 +200,7 @@ components:
           type: string
           description: The content of the message.
 paths:
-  /chat/completions:
+  /v1/chat/completions:
     post:
       summary: Create a chat completion
       description: Generate a chat-based completion using the specified parameters.
@@ -347,7 +347,6 @@ paths:
       description: Create an image based on the provided prompt and parameters.
       operationId: generateImage
       security:
-        - BearerAuth: []
         - ApiKeyAuth: []
       requestBody:
         required: true
