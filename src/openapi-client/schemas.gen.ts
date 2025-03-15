@@ -16,6 +16,12 @@ export const ImageModelSchema = {
   enum: ['dall-e', 'stable-diffusion', 'dreamshaper_8_93211.safetensors']
 } as const
 
+export const NegativePromptSchema = {
+  type: 'string',
+  required: false,
+  description: 'Things to exclude in the generated image.'
+} as const
+
 export const MessageSchema = {
   type: 'object',
   properties: {

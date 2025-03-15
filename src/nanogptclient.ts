@@ -1,20 +1,29 @@
 import { Client, createClient } from '@hey-api/client-fetch'
-import { createChatCompletion, Options } from './openapi-client/sdk.gen.js'
-import { ChatModel, CreateChatCompletionData } from './openapi-client/types.gen.js'
+import { createChatCompletion, generateImage, Options } from './openapi-client/sdk.gen.js'
+import {
+  ChatModel,
+  CreateChatCompletionData,
+  GenerateImageData
+} from './openapi-client/types.gen.js'
 import { client } from './openapi-client/client.gen.ts'
 
 type APIKey = string
+interface NanoGPTClientConfig {
+  apiKey: APIKey
+  defaultChatModel?: ChatModel
+  client?: Client
+}
 
 export class NanoGPTClient {
   defaultModel?: ChatModel
   client: Client
 
-  constructor(apiKey: APIKey, defaultModel?: ChatModel) {
-    this.defaultModel = defaultModel
+  constructor(config: NanoGPTClientConfig) {
+    this.defaultModel = config.defaultChatModel
 
     this.client = createClient({
-      ...client.getConfig(),
-      auth: () => `${apiKey}`
+      ...(config.client || client).getConfig(),
+      auth: () => `${config.apiKey}`
     })
   }
 
@@ -31,6 +40,13 @@ export class NanoGPTClient {
       })
     }
     return createChatCompletion({
+      ...options,
+      client: options.client || this.client
+    })
+  }
+
+  image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
+    return generateImage({
       ...options,
       client: options.client || this.client
     })
