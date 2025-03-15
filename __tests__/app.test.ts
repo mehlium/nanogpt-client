@@ -28,6 +28,7 @@ describe('NanoGPTClient', () => {
     })
 
     assert.equal(data?.choices?.[0]?.message?.content, 'this is a test')
+    assert.equal(data?.nanoGPT?.paymentSource, 'XNO')
     assert.equal(error, undefined)
   })
 
@@ -44,6 +45,9 @@ describe('NanoGPTClient', () => {
       }
     })
     assert.equal(data?.created, 1742029987521)
+    assert.equal(data?.cost, 0.004300130468354767)
+    assert.equal(data?.paymentSource, 'XNO')
+    assert.equal(data?.remainingBalance, 0.8217866695316453)
     assert.equal(error, undefined)
   })
 })
