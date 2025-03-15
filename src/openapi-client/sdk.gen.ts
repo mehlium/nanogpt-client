@@ -7,7 +7,10 @@ import type {
   CreateChatCompletionError,
   GenerateImageData,
   GenerateImageResponse,
-  GenerateImageError
+  GenerateImageError,
+  ModelsData,
+  ModelsResponse,
+  ModelsError
 } from './types.gen.js'
 import { client as _heyApiClient } from './client.gen.js'
 
@@ -83,5 +86,24 @@ export const generateImage = <ThrowOnError extends boolean = false>(
       'Content-Type': 'application/json',
       ...options?.headers
     }
+  })
+}
+
+/**
+ * Retrieve available models
+ * Retrieve all available models on the OpenAI models endpoint format
+ */
+export const models = <ThrowOnError extends boolean = false>(
+  options?: Options<ModelsData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).get<ModelsResponse, ModelsError, ThrowOnError>({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http'
+      }
+    ],
+    url: '/v1/models',
+    ...options
   })
 }

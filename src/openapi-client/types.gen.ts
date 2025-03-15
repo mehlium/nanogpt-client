@@ -448,6 +448,18 @@ export type Cost = unknown
  */
 export type RemainingBalance = unknown
 
+export type _Object = 'list' | 'model'
+
+export const _Object = {
+  LIST: 'list',
+  MODEL: 'model'
+} as const
+
+/**
+ * Timestamp when the completion was created.
+ */
+export type Created = number
+
 /**
  * Controls randomness (0 to 2).
  */
@@ -622,10 +634,7 @@ export type CreateChatCompletionResponses = {
      * Typically 'chat.completion'.
      */
     object?: string
-    /**
-     * Timestamp when the completion was created.
-     */
-    created?: number
+    created?: Created
     model?: ChatModel
     choices?: Array<{
       /**
@@ -749,6 +758,68 @@ export type GenerateImageResponses = {
 }
 
 export type GenerateImageResponse = GenerateImageResponses[keyof GenerateImageResponses]
+
+export type ModelsData = {
+  body?: never
+  path?: never
+  query?: never
+  url: '/v1/models'
+}
+
+export type ModelsErrors = {
+  /**
+   * Invalid request.
+   */
+  400: {
+    /**
+     * Details about the invalid request.
+     */
+    error?: string
+  }
+  /**
+   * Unauthorized.
+   */
+  401: {
+    /**
+     * Authentication error.
+     */
+    error?: string
+  }
+  /**
+   * Server error.
+   */
+  500: {
+    /**
+     * Server-side error details.
+     */
+    error?: string
+  }
+}
+
+export type ModelsError = ModelsErrors[keyof ModelsErrors]
+
+export type ModelsResponses = {
+  /**
+   * Models data retrieved successfully.
+   */
+  200: {
+    object?: _Object
+    data?: Array<{
+      /**
+       * Model id
+       */
+      id?: string
+      object?: _Object
+      created?: Created
+      /**
+       * Organization / owner of the model.
+       */
+      owned_by?: string
+    }>
+  }
+}
+
+export type ModelsResponse = ModelsResponses[keyof ModelsResponses]
 
 export type ClientOptions = {
   baseUrl: 'https://nano-gpt.com/api' | (string & {})

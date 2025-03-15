@@ -1,9 +1,10 @@
 import { Client, createClient } from '@hey-api/client-fetch'
-import { createChatCompletion, generateImage, Options } from './openapi-client/sdk.gen.js'
+import { createChatCompletion, generateImage, models, Options } from './openapi-client/sdk.gen.js'
 import {
   ChatModel,
   CreateChatCompletionData,
-  GenerateImageData
+  GenerateImageData,
+  ModelsData
 } from './openapi-client/types.gen.js'
 import { client } from './openapi-client/client.gen.ts'
 
@@ -47,6 +48,13 @@ export class NanoGPTClient {
 
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
     return generateImage({
+      ...options,
+      client: options.client || this.client
+    })
+  }
+
+  models<ThrowOnError extends boolean = false>(options: Options<ModelsData, ThrowOnError>) {
+    return models({
       ...options,
       client: options.client || this.client
     })
