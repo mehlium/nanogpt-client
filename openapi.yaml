@@ -401,7 +401,14 @@ components:
     RemainingBalance:
       type: float
       description: Remaining balance in wallet.
-
+    Object:
+      type: string
+      enum:
+        - list
+        - model
+    Created:
+      type: integer
+      description: Timestamp when the completion was created.
 paths:
   /v1/chat/completions:
     post:
@@ -469,8 +476,7 @@ paths:
                     type: string
                     description: Typically 'chat.completion'.
                   created:
-                    type: integer
-                    description: Timestamp when the completion was created.
+                    $ref: '#/components/schemas/Created'
                   model:
                     $ref: '#/components/schemas/ChatModel'
                   choices:
@@ -610,6 +616,68 @@ paths:
                   remainingBalance:
                     $ref: '#/components/schemas/RemainingBalance'
 
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Details about the invalid request.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Authentication error.
+        '500':
+          description: Server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Server-side error details.
+  /v1/models:
+    get:
+      summary: Retrieve available models
+      description: Retrieve all available models on the OpenAI models endpoint format
+      operationId: models
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Models data retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    $ref: '#/components/schemas/Object'
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Model id
+                        object:
+                          $ref: '#/components/schemas/Object'
+                        created:
+                          $ref: '#/components/schemas/Created'
+                        owned_by:
+                          type: string
+                          description: Organization / owner of the model.
         '400':
           description: Invalid request.
           content:

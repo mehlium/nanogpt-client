@@ -4,7 +4,7 @@ import { NanoGPTClient } from '../src/index.ts'
 import { client } from '../src/openapi-client/client.gen.ts'
 import { createClient } from '@hey-api/client-fetch'
 import { mockResponse } from './test-utils.ts'
-import { chatSuccesful, imageSuccesful } from './fixtures.ts'
+import { chatSuccesful, imageSuccesful, modelsSuccesful } from './fixtures.ts'
 
 const mockedClient = (json: any) => {
   return createClient({
@@ -50,6 +50,16 @@ describe('NanoGPTClient', () => {
     assert.equal(data?.cost, 0.004300130468354767)
     assert.equal(data?.paymentSource, 'XNO')
     assert.equal(data?.remainingBalance, 0.8217866695316453)
+    assert.equal(error, undefined)
+  })
+  test('models successful', async (t) => {
+    const nano = new NanoGPTClient({
+      apiKey: 'test-key',
+      client: mockedClient(modelsSuccesful)
+    })
+    const { data, error } = await nano.models({})
+    assert.equal(data?.object, 'list')
+    assert.equal(data?.data?.length, 2)
     assert.equal(error, undefined)
   })
 })

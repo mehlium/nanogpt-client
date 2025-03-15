@@ -246,3 +246,13 @@ export const RemainingBalanceSchema = {
   type: 'float',
   description: 'Remaining balance in wallet.'
 } as const
+
+export const ObjectSchema = {
+  type: 'string',
+  enum: ['list', 'model']
+} as const
+
+export const CreatedSchema = {
+  type: 'integer',
+  description: 'Timestamp when the completion was created.'
+} as const

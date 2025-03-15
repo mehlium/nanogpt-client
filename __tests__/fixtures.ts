@@ -50,3 +50,16 @@ export const imageSuccesful = {
   paymentSource: 'XNO',
   remainingBalance: 0.8217866695316453
 }
+
+export const modelsSuccesful = {
+  object: 'list',
+  data: [
+    {
+      id: 'recommended-model',
+      object: 'model',
+      created: 1742048051,
+      owned_by: 'organization-owner'
+    },
+    { id: 'gpt-4.5-preview', object: 'model', created: 1742048051, owned_by: 'openai' }
+  ]
+}
