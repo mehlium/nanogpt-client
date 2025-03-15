@@ -41,7 +41,9 @@ describe('NanoGPTClient', () => {
       body: {
         model: 'fast-sdxl',
         prompt: 'cat with glasses',
-        resolution: '32x32'
+        resolution: '32x32',
+        width: 32,
+        height: 32
       }
     })
     assert.equal(data?.created, 1742029987521)
