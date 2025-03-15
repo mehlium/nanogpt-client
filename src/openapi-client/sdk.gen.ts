@@ -81,7 +81,7 @@ export const generateImage = <ThrowOnError extends boolean = false>(
         type: 'apiKey'
       }
     ],
-    url: '/image/generations',
+    url: '/generate-image',
     ...options,
     headers: {
       'Content-Type': 'application/json',
