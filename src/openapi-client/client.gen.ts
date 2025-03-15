@@ -22,6 +22,6 @@ export type CreateClientConfig<T extends DefaultClientOptions = ClientOptions> =
 
 export const client = createClient(
   createConfig<ClientOptions>({
-    baseUrl: 'https://nano-gpt.com/api/v1'
+    baseUrl: 'https://nano-gpt.com/api'
   })
 )
