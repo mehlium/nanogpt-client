@@ -4,7 +4,7 @@ info:
   description: API for interacting with NanoGPT's text and image generation services.
   version: 1.0.0
 servers:
-  - url: https://nano-gpt.com/api/v1
+  - url: https://nano-gpt.com/api
     description: Primary API endpoint
 components:
   securitySchemes:
@@ -15,7 +15,7 @@ components:
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: api-key
+      name: x-api-key
   parameters:
     TemperatureParam:
       name: temperature
@@ -100,6 +100,47 @@ components:
       description: Number of choices to generate.
       schema:
         type: integer
+    NumberOfSteps:
+      name: num_steps
+      in: query
+      required: false
+      schema:
+        type: integer
+    Resolution:
+      name: resolution
+      in: query
+      required: false
+      description: Dimensions for the generated image (e.g., "256x256").
+      schema:
+        type: string
+    ImageSamplerName:
+      name: sampler_name
+      in: query
+      required: false
+      description: 'DPM++ 2S a Karras'
+      schema:
+        type: string
+    ImageScale:
+      name: scale
+      in: query
+      required: false
+      description: 'In Stable Diffusion, most models default guidance scale value is between seven and 7.5. A lower number incorporates more creativity in the final image while a higher number indicates that the image is closely tied to the text prompt.'
+      schema:
+        type: float
+    ImageWidth:
+      name: width
+      in: query
+      required: false
+      description: Width of image to generate
+      schema:
+        type: integer
+    ImageHeight:
+      name: height
+      in: query
+      required: false
+      description: Height of image to generate
+      schema:
+        type: integer
     SeedParam:
       name: seed
       in: query
@@ -145,6 +186,10 @@ components:
         - dall-e
         - stable-diffusion
         - dreamshaper_8_93211.safetensors
+    NegativePrompt:
+      type: string
+      required: false
+      description: Things to exclude in the generated image.
     Message:
       type: object
       properties:
@@ -155,7 +200,7 @@ components:
           type: string
           description: The content of the message.
 paths:
-  /chat/completions:
+  /v1/chat/completions:
     post:
       summary: Create a chat completion
       description: Generate a chat-based completion using the specified parameters.
@@ -296,13 +341,12 @@ paths:
                   error:
                     type: string
                     description: Server-side error details.
-  /image/generations:
+  /generate-image:
     post:
       summary: Generate an image
       description: Create an image based on the provided prompt and parameters.
       operationId: generateImage
       security:
-        - BearerAuth: []
         - ApiKeyAuth: []
       requestBody:
         required: true
@@ -311,20 +355,32 @@ paths:
             schema:
               type: object
               properties:
-                model:
-                  $ref: '#/components/schemas/ImageModel'
                 prompt:
                   type: string
                   description: Text prompt for image generation.
-                n:
+                model:
+                  $ref: '#/components/schemas/ImageModel'
+                width:
+                  $ref: '#/components/parameters/ImageWidth'
+                height:
+                  $ref: '#/components/parameters/ImageHeight'
+                negative_prompt:
+                  $ref: '#/components/schemas/NegativePrompt'
+                nImages:
                   $ref: '#/components/parameters/NParam'
-                size:
-                  type: string
-                  description: Dimensions for the generated image (e.g., "256x256").
-                response_format:
-                  $ref: '#/components/parameters/ResponseFormatParam'
-                user:
-                  $ref: '#/components/parameters/UserParam'
+                num_steps:
+                  $ref: '#/components/parameters/NumberOfSteps'
+                resolution:
+                  $ref: '#/components/parameters/Resolution'
+                sampler_name:
+                  $ref: '#/components/parameters/ImageSamplerName'
+                scale:
+                  $ref: '#/components/parameters/ImageScale'
+              required:
+                - prompt
+                - model
+                - width
+                - height
       responses:
         '200':
           description: Successful image generation response.

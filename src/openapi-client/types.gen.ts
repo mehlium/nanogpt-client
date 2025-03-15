@@ -23,6 +23,11 @@ export const ImageModel = {
   DREAMSHAPER_8_93211_SAFETENSORS: 'dreamshaper_8_93211.safetensors'
 } as const
 
+/**
+ * Things to exclude in the generated image.
+ */
+export type NegativePrompt = string
+
 export type Message = {
   /**
    * The role of the message sender (e.g., 'user', 'assistant').
@@ -91,6 +96,33 @@ export type UserParam = string
  */
 export type NParam = number
 
+export type NumberOfSteps = number
+
+/**
+ * Dimensions for the generated image (e.g., "256x256").
+ */
+export type Resolution = string
+
+/**
+ * DPM++ 2S a Karras
+ */
+export type ImageSamplerName = string
+
+/**
+ * In Stable Diffusion, most models default guidance scale value is between seven and 7.5. A lower number incorporates more creativity in the final image while a higher number indicates that the image is closely tied to the text prompt.
+ */
+export type ImageScale = unknown
+
+/**
+ * Width of image to generate
+ */
+export type ImageWidth = number
+
+/**
+ * Height of image to generate
+ */
+export type ImageHeight = number
+
 /**
  * Seed for deterministic sampling.
  */
@@ -133,7 +165,7 @@ export type CreateChatCompletionData = {
   }
   path?: never
   query?: never
-  url: '/chat/completions'
+  url: '/v1/chat/completions'
 }
 
 export type CreateChatCompletionErrors = {
@@ -234,22 +266,23 @@ export type CreateChatCompletionResponse =
 
 export type GenerateImageData = {
   body: {
-    model?: ImageModel
     /**
      * Text prompt for image generation.
      */
-    prompt?: string
-    n?: NParam
-    /**
-     * Dimensions for the generated image (e.g., "256x256").
-     */
-    size?: string
-    response_format?: ResponseFormatParam
-    user?: UserParam
+    prompt: string
+    model: ImageModel
+    width: ImageWidth
+    height: ImageHeight
+    negative_prompt?: NegativePrompt
+    nImages?: NParam
+    num_steps?: NumberOfSteps
+    resolution?: Resolution
+    sampler_name?: ImageSamplerName
+    scale?: ImageScale
   }
   path?: never
   query?: never
-  url: '/image/generations'
+  url: '/generate-image'
 }
 
 export type GenerateImageErrors = {
@@ -309,5 +342,5 @@ export type GenerateImageResponses = {
 export type GenerateImageResponse = GenerateImageResponses[keyof GenerateImageResponses]
 
 export type ClientOptions = {
-  baseUrl: 'https://nano-gpt.com/api/v1' | (string & {})
+  baseUrl: 'https://nano-gpt.com/api' | (string & {})
 }
