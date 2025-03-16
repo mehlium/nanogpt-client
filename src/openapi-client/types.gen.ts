@@ -425,7 +425,7 @@ export type Message = {
   /**
    * The role of the message sender (e.g., 'user', 'assistant').
    */
-  role?: string
+  role?: 'user' | 'assistant' | 'system'
   /**
    * The content of the message.
    */
