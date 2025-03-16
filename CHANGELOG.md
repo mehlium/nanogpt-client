@@ -1,5 +1,16 @@
 # nanogpt-client
 
+## 0.1.0
+
+### Minor Changes
+
+- 4ca3e73: Adds role type
+- ac23417: Adds support for models endpoint.
+
+### Patch Changes
+
+- bfb3fab: Adds check for defaultChatModel for simple chat
+
 ## 0.0.4
 
 ### Patch Changes
