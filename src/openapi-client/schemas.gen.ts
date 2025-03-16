@@ -223,7 +223,8 @@ export const MessageSchema = {
   properties: {
     role: {
       type: 'string',
-      description: "The role of the message sender (e.g., 'user', 'assistant')."
+      description: "The role of the message sender (e.g., 'user', 'assistant').",
+      enum: ['user', 'assistant', 'system']
     },
     content: {
       type: 'string',
