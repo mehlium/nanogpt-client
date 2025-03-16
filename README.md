@@ -16,17 +16,26 @@ npm install nanogpt-client
 ```javascript
 import { NanoGPTClient } from 'nanogpt-client'
 
-const client = new NanoGPTClient(NANOGPT_API_KEY)
+const prompt = async () => {
+  const client = new NanoGPTClient({
+    apiKey: '<NanoGPT API Key>',
+    defaultChatModel: 'chatgpt-4o-latest'
+  })
 
-const { data, error } = await client.chat({
-  body: {
-    model: 'chatgpt-4o-latest',
-    messages: [
-      { role: 'system', content: 'initial system prompt' },
-      { role: 'user', content: 'input from user' }
-    ]
-  }
-})
+  const {
+    data: {
+      choices: [
+        {
+          message: { content }
+        }
+      ]
+    }
+  } = await client.chat('Hello world')
+
+  console.log(content)
+}
+
+prompt()
 ```
 
 ## Contributing
