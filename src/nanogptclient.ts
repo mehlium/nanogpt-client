@@ -16,11 +16,11 @@ interface NanoGPTClientConfig {
 }
 
 export class NanoGPTClient {
-  defaultModel?: ChatModel
+  defaultChatModel?: ChatModel
   client: Client
 
   constructor(config: NanoGPTClientConfig) {
-    this.defaultModel = config.defaultChatModel
+    this.defaultChatModel = config.defaultChatModel
 
     this.client = createClient({
       ...(config.client || client).getConfig(),
@@ -29,20 +29,23 @@ export class NanoGPTClient {
   }
 
   chat<ThrowOnError extends boolean = false>(
-    options: Options<CreateChatCompletionData, ThrowOnError> | string
+    optionsOrChat: Options<CreateChatCompletionData, ThrowOnError> | string
   ) {
-    if (typeof options === 'string') {
+    if (typeof optionsOrChat === 'string') {
+      if (this.defaultChatModel === undefined) {
+        throw new Error('defaultChatModel missing, configure in constructor')
+      }
       return createChatCompletion({
         body: {
-          model: this.defaultModel,
-          messages: [{ role: 'user', content: options }]
+          model: this.defaultChatModel,
+          messages: [{ role: 'user', content: optionsOrChat }]
         },
         client: this.client
       })
     }
     return createChatCompletion({
-      ...options,
-      client: options.client || this.client
+      ...optionsOrChat,
+      client: optionsOrChat.client || this.client
     })
   }
 

@@ -31,6 +31,14 @@ describe('NanoGPTClient', () => {
     assert.equal(data?.nanoGPT?.paymentSource, 'XNO')
     assert.equal(error, undefined)
   })
+  test('chat simple successful', async (t) => {
+    const nano = new NanoGPTClient({
+      apiKey: 'test-key',
+      client: mockedClient(chatSuccesful),
+      defaultChatModel: 'chatgpt-4o-latest'
+    })
+    assert.doesNotReject(() => nano.chat('test'))
+  })
 
   test('image successful', async (t) => {
     const nano = new NanoGPTClient({
