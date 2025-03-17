@@ -63,3 +63,13 @@ export const modelsSuccesful = {
     { id: 'gpt-4.5-preview', object: 'model', created: 1742048051, owned_by: 'openai' }
   ]
 }
+
+export const streamSuccessful = `data: {"id":"chatcmpl-1742215744950","object":"chat.completion.chunk","created":1742215744,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":"Hello"},"finish_reason":null}
+]}
+
+data: {"id":"chatcmpl-1742215744952","object":"chat.completion.chunk","created":1742215744,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":"!"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742215744952","object":"chat.completion.chunk","created":1742215744,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" It"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742215744953","object":"chat.completion.chunk","created":1742215744,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" seems"},"finish_reason":null
+}]}`

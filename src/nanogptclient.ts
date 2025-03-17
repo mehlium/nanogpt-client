@@ -3,10 +3,12 @@ import { createChatCompletion, generateImage, models, Options } from './openapi-
 import {
   ChatModel,
   CreateChatCompletionData,
+  CreateChatCompletionResponse,
   GenerateImageData,
   ModelsData
 } from './openapi-client/types.gen.js'
 import { client } from './openapi-client/client.gen.ts'
+import { bodyToAsyncGenerator } from './utils.ts'
 
 type APIKey = string
 interface NanoGPTClientConfig {
@@ -47,6 +49,25 @@ export class NanoGPTClient {
       ...optionsOrChat,
       client: optionsOrChat.client || this.client
     })
+  }
+
+  async stream<ThrowOnError extends boolean = false>(
+    options: Options<CreateChatCompletionData, ThrowOnError>
+  ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> {
+    const headers = {
+      'Content-Type': 'text/event-stream',
+      Accept: 'text/event-stream',
+      ...options.headers
+    }
+    return this.chat({
+      ...options,
+      body: { ...options.body, stream: true },
+      headers: headers,
+      client: createClient({
+        ...(options.client || this.client).getConfig(),
+        parseAs: 'stream'
+      })
+    }).then((response) => bodyToAsyncGenerator(response.response))
   }
 
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
