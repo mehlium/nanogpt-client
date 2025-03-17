@@ -73,6 +73,10 @@ export class NanoGPTClient {
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
     return generateImage({
       ...options,
+      body: {
+        ...options.body,
+        resolution: options.body.resolution || `${options.body.width}x${options.body.height}`
+      },
       client: options.client || this.client
     })
   }
