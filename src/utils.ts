@@ -1,7 +1,7 @@
 import { TextDecoder } from 'util'
 import { CreateChatCompletionResponse } from './openapi-client/types.gen.ts'
 
-export function mapMultiple(data: string): CreateChatCompletionResponse[] {
+export function mapMultiple(data: string): (CreateChatCompletionResponse | undefined)[] {
   return data
     .replaceAll('\n', '')
     .replaceAll('data: ', '\n')
@@ -13,15 +13,17 @@ export function mapMultiple(data: string): CreateChatCompletionResponse[] {
         return JSON.parse(value) as CreateChatCompletionResponse
       } catch (err) {
         console.error(err)
-        console.log(`valu: ${value}`)
       }
     })
 }
 
 export async function* bodyToAsyncIterator(
   response: Response
-): AsyncIterator<CreateChatCompletionResponse> {
+): AsyncIterator<CreateChatCompletionResponse | undefined> {
   const decoder: TextDecoder = new TextDecoder()
+  if (response.body === null) {
+    return undefined
+  }
   const reader = response.body.getReader()
   try {
     while (true) {

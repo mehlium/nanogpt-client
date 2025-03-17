@@ -3,6 +3,7 @@ import { createChatCompletion, generateImage, models, Options } from './openapi-
 import {
   ChatModel,
   CreateChatCompletionData,
+  CreateChatCompletionResponse,
   GenerateImageData,
   ModelsData
 } from './openapi-client/types.gen.js'
@@ -52,7 +53,7 @@ export class NanoGPTClient {
 
   async stream<ThrowOnError extends boolean = false>(
     optionsOrChat: Options<CreateChatCompletionData, ThrowOnError>
-  ) {
+  ): Promise<AsyncIterator<CreateChatCompletionResponse | undefined, any, any>> {
     const headers = {
       'Content-Type': 'text/event-stream',
       Accept: 'text/event-stream',

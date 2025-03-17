@@ -4,7 +4,7 @@ import assert from 'node:assert'
 import { streamSuccessful } from './fixtures.ts'
 
 describe('utils test', () => {
-  test('parse data', async (t) => {
+  test('mapMultiple', async (t) => {
     const mapped = mapMultiple(streamSuccessful)
     assert.equal(mapped.length, 4)
   })
