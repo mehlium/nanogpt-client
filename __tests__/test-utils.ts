@@ -7,3 +7,12 @@ export const mockResponse = (json: any) =>
       }
     })
   )
+export const mockStreamResponse = (data: string) =>
+  Promise.resolve(
+    new Response(data, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/event-stream'
+      }
+    })
+  )

@@ -3,8 +3,8 @@ import assert from 'node:assert'
 import { NanoGPTClient } from '../src/index.ts'
 import { client } from '../src/openapi-client/client.gen.ts'
 import { createClient } from '@hey-api/client-fetch'
-import { mockResponse } from './test-utils.ts'
-import { chatSuccesful, imageSuccesful, modelsSuccesful } from './fixtures.ts'
+import { mockResponse, mockStreamResponse } from './test-utils.ts'
+import { chatSuccesful, imageSuccesful, modelsSuccesful, streamSuccessful } from './fixtures.ts'
 
 const mockedClient = (json: any) => {
   return createClient({
@@ -69,5 +69,21 @@ describe('NanoGPTClient', () => {
     assert.equal(data?.object, 'list')
     assert.equal(data?.data?.length, 2)
     assert.equal(error, undefined)
+  })
+  test('stream successful', async () => {
+    const nano = new NanoGPTClient({
+      apiKey: 'test-key',
+      client: createClient({
+        ...client.getConfig(),
+        fetch: (request: Request) => mockStreamResponse(streamSuccessful)
+      })
+    })
+    const res = await nano.stream({
+      body: { model: 'chatgpt-4o-latest', messages: [{ role: 'user', content: 'bar' }] }
+    })
+
+    for await (const chunk of res) {
+      console.log(chunk)
+    }
   })
 })

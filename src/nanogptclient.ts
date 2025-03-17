@@ -7,6 +7,7 @@ import {
   ModelsData
 } from './openapi-client/types.gen.js'
 import { client } from './openapi-client/client.gen.ts'
+import { bodyToAsyncIterator } from './utils.ts'
 
 type APIKey = string
 interface NanoGPTClientConfig {
@@ -47,6 +48,25 @@ export class NanoGPTClient {
       ...optionsOrChat,
       client: optionsOrChat.client || this.client
     })
+  }
+
+  async stream<ThrowOnError extends boolean = false>(
+    optionsOrChat: Options<CreateChatCompletionData, ThrowOnError>
+  ) {
+    const headers = {
+      'Content-Type': 'text/event-stream',
+      Accept: 'text/event-stream',
+      ...optionsOrChat.headers
+    }
+    return this.chat({
+      ...optionsOrChat,
+      body: { ...optionsOrChat.body, stream: true },
+      headers: headers,
+      client: createClient({
+        ...(optionsOrChat.client || this.client).getConfig(),
+        parseAs: 'stream'
+      })
+    }).then((response) => bodyToAsyncIterator(response.response))
   }
 
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
