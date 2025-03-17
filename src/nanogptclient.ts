@@ -52,19 +52,19 @@ export class NanoGPTClient {
   }
 
   async stream<ThrowOnError extends boolean = false>(
-    optionsOrChat: Options<CreateChatCompletionData, ThrowOnError>
+    options: Options<CreateChatCompletionData, ThrowOnError>
   ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> {
     const headers = {
       'Content-Type': 'text/event-stream',
       Accept: 'text/event-stream',
-      ...optionsOrChat.headers
+      ...options.headers
     }
     return this.chat({
-      ...optionsOrChat,
-      body: { ...optionsOrChat.body, stream: true },
+      ...options,
+      body: { ...options.body, stream: true },
       headers: headers,
       client: createClient({
-        ...(optionsOrChat.client || this.client).getConfig(),
+        ...(options.client || this.client).getConfig(),
         parseAs: 'stream'
       })
     }).then((response) => bodyToAsyncGenerator(response.response))
