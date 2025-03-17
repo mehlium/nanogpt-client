@@ -1,5 +1,15 @@
 # nanogpt-client
 
+## 0.2.0
+
+### Minor Changes
+
+- b4a550e: Adds chat stream support
+
+### Patch Changes
+
+- d48a3d4: Sets resolution based on width/height
+
 ## 0.1.0
 
 ### Minor Changes
