@@ -5,6 +5,7 @@ import { client } from '../src/openapi-client/client.gen.ts'
 import { createClient } from '@hey-api/client-fetch'
 import { mockResponse, mockStreamResponse } from './test-utils.ts'
 import { chatSuccesful, imageSuccesful, modelsSuccesful, streamSuccessful } from './fixtures.ts'
+import { CreateChatCompletionResponse } from '../dist/index.d.cts'
 
 const mockedClient = (json: any) => {
   return createClient({
@@ -78,12 +79,16 @@ describe('NanoGPTClient', () => {
         fetch: (request: Request) => mockStreamResponse(streamSuccessful)
       })
     })
-    const res = await nano.stream({
+    const iterator = await nano.stream({
       body: { model: 'chatgpt-4o-latest', messages: [{ role: 'user', content: 'bar' }] }
     })
 
-    for await (const chunk of res) {
-      console.log(chunk)
+    const yielded: (CreateChatCompletionResponse | undefined)[] = []
+    let result = await iterator.next()
+    while (!result.done) {
+      yielded.push(result.value)
+      result = await iterator.next()
     }
+    assert.equal(yielded.length, 4)
   })
 })

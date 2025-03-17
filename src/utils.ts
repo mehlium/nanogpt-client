@@ -17,23 +17,28 @@ export function mapMultiple(data: string): (CreateChatCompletionResponse | undef
     })
 }
 
-export async function* bodyToAsyncIterator(
+export async function* bodyToAsyncGenerator(
   response: Response
-): AsyncIterator<CreateChatCompletionResponse | undefined> {
+): AsyncGenerator<CreateChatCompletionResponse | undefined> {
   const decoder: TextDecoder = new TextDecoder()
   if (response.body === null) {
     return undefined
   }
   const reader = response.body.getReader()
+  let finalValue: CreateChatCompletionResponse | undefined = undefined
   try {
     while (true) {
       const { done, value } = await reader.read()
       let mapped = decoder.decode(value)
       const values = mapMultiple(mapped)
-      if (done) break
+      if (done) {
+        finalValue = values[values.length - 1]
+        break
+      }
       yield* values
     }
   } finally {
     reader.releaseLock()
   }
+  return finalValue
 }
