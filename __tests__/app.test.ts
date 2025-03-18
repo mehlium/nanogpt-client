@@ -1,11 +1,10 @@
 import { test, describe, beforeEach, mock } from 'node:test'
 import assert from 'node:assert'
-import { NanoGPTClient } from '../src/index.ts'
+import { CreateChatCompletionResponse, NanoGPTClient } from '../src/index.ts'
 import { client } from '../src/openapi-client/client.gen.ts'
 import { createClient } from '@hey-api/client-fetch'
 import { mockResponse, mockStreamResponse } from './test-utils.ts'
 import { chatSuccesful, imageSuccesful, modelsSuccesful, streamSuccessful } from './fixtures.ts'
-import { CreateChatCompletionResponse } from '../dist/index.d.cts'
 
 const mockedClient = (json: any) => {
   return createClient({
@@ -19,9 +18,17 @@ describe('NanoGPTClient', () => {
     mock.reset()
   })
 
-  test('chat successful', async (t) => {
+  test('chat().simple successful', async (t) => {
+    const nano = new NanoGPTClient({
+      apiKey: 'test-key',
+      client: mockedClient(chatSuccesful)
+    })
+    const textResponsetResponse = await nano.chat().simple('test', 'chatgpt-4o-latest')
+    assert.equal(textResponsetResponse, 'this is a test')
+  })
+  test('chat.advanced() successful', async (t) => {
     const nano = new NanoGPTClient({ apiKey: 'test-key', client: mockedClient(chatSuccesful) })
-    const { data, error } = await nano.chat({
+    const { data, error } = await nano.chat().advanced({
       body: {
         model: 'chatgpt-4o-latest',
         messages: [{ role: 'system', content: 'test' }]
@@ -31,14 +38,6 @@ describe('NanoGPTClient', () => {
     assert.equal(data?.choices?.[0]?.message?.content, 'this is a test')
     assert.equal(data?.nanoGPT?.paymentSource, 'XNO')
     assert.equal(error, undefined)
-  })
-  test('chat simple successful', async (t) => {
-    const nano = new NanoGPTClient({
-      apiKey: 'test-key',
-      client: mockedClient(chatSuccesful),
-      defaultChatModel: 'chatgpt-4o-latest'
-    })
-    assert.doesNotReject(() => nano.chat('test'))
   })
 
   test('image successful', async (t) => {
@@ -71,7 +70,7 @@ describe('NanoGPTClient', () => {
     assert.equal(data?.data?.length, 2)
     assert.equal(error, undefined)
   })
-  test('stream successful', async () => {
+  test('chat().stream() successful', async () => {
     const nano = new NanoGPTClient({
       apiKey: 'test-key',
       client: createClient({
@@ -79,9 +78,12 @@ describe('NanoGPTClient', () => {
         fetch: (request: Request) => mockStreamResponse(streamSuccessful)
       })
     })
-    const iterator = await nano.stream({
-      body: { model: 'chatgpt-4o-latest', messages: [{ role: 'user', content: 'bar' }] }
-    })
+    const iterator = await nano
+      .chat()
+      .stream()
+      .advanced({
+        body: { model: 'chatgpt-4o-latest', messages: [{ role: 'user', content: 'bar' }] }
+      })
 
     const yielded: (CreateChatCompletionResponse | undefined)[] = []
     let result = await iterator.next()

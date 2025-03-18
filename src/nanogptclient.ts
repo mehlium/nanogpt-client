@@ -1,8 +1,9 @@
-import { Client, createClient } from '@hey-api/client-fetch'
+import { Client, createClient, RequestResult } from '@hey-api/client-fetch'
 import { createChatCompletion, generateImage, models, Options } from './openapi-client/sdk.gen.js'
 import {
   ChatModel,
   CreateChatCompletionData,
+  CreateChatCompletionError,
   CreateChatCompletionResponse,
   GenerateImageData,
   ModelsData
@@ -13,61 +14,78 @@ import { bodyToAsyncGenerator } from './utils.ts'
 type APIKey = string
 interface NanoGPTClientConfig {
   apiKey: APIKey
-  defaultChatModel?: ChatModel
   client?: Client
 }
 
+type StreamType = <ThrowOnError extends boolean = false>(
+  options: Options<CreateChatCompletionData, ThrowOnError>
+) => Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>>
+
+interface Stream {
+  advanced: StreamType
+}
+
+interface Chat {
+  simple: (message: string, model: ChatModel) => Promise<string | undefined>
+  advanced: <ThrowOnError extends boolean = false>(
+    options: Options<CreateChatCompletionData, ThrowOnError>
+  ) => RequestResult<CreateChatCompletionResponse, CreateChatCompletionError, ThrowOnError>
+  stream: () => Stream
+}
+
 export class NanoGPTClient {
-  defaultChatModel?: ChatModel
   client: Client
 
-  constructor(config: NanoGPTClientConfig) {
-    this.defaultChatModel = config.defaultChatModel
+  private streamClient: Client
 
+  constructor(config: NanoGPTClientConfig) {
     this.client = createClient({
       ...(config.client || client).getConfig(),
       auth: () => `${config.apiKey}`
     })
-  }
-
-  chat<ThrowOnError extends boolean = false>(
-    optionsOrChat: Options<CreateChatCompletionData, ThrowOnError> | string
-  ) {
-    if (typeof optionsOrChat === 'string') {
-      if (this.defaultChatModel === undefined) {
-        throw new Error('defaultChatModel missing, configure in constructor')
-      }
-      return createChatCompletion({
-        body: {
-          model: this.defaultChatModel,
-          messages: [{ role: 'user', content: optionsOrChat }]
-        },
-        client: this.client
-      })
-    }
-    return createChatCompletion({
-      ...optionsOrChat,
-      client: optionsOrChat.client || this.client
+    this.streamClient = createClient({
+      ...this.client.getConfig(),
+      parseAs: 'stream'
     })
   }
-
-  async stream<ThrowOnError extends boolean = false>(
-    options: Options<CreateChatCompletionData, ThrowOnError>
-  ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> {
-    const headers = {
-      'Content-Type': 'text/event-stream',
-      Accept: 'text/event-stream',
-      ...options.headers
+  chat(): Chat {
+    return {
+      simple: (message: string, model: ChatModel) =>
+        createChatCompletion({
+          body: {
+            model,
+            messages: [{ role: 'user', content: message }]
+          },
+          client: this.client
+        }).then((response) => response.data?.choices?.[0]?.message?.content),
+      advanced: <ThrowOnError extends boolean = false>(
+        options: Options<CreateChatCompletionData, ThrowOnError>
+      ) =>
+        createChatCompletion({
+          ...options,
+          client: options.client || this.client
+        }),
+      stream: () => {
+        return {
+          advanced: async <ThrowOnError extends boolean = false>(
+            options: Options<CreateChatCompletionData, ThrowOnError>
+          ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> => {
+            const headers = {
+              'Content-Type': 'text/event-stream',
+              Accept: 'text/event-stream',
+              ...options.headers
+            }
+            const response = await createChatCompletion({
+              ...options,
+              body: { ...options.body, stream: true },
+              headers: headers,
+              client: options.client || this.streamClient
+            })
+            return bodyToAsyncGenerator(response.response)
+          }
+        }
+      }
     }
-    return this.chat({
-      ...options,
-      body: { ...options.body, stream: true },
-      headers: headers,
-      client: createClient({
-        ...(options.client || this.client).getConfig(),
-        parseAs: 'stream'
-      })
-    }).then((response) => bodyToAsyncGenerator(response.response))
   }
 
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
