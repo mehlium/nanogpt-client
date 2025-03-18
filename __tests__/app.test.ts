@@ -78,7 +78,7 @@ describe('NanoGPTClient', () => {
         fetch: (request: Request) => mockStreamResponse(streamSuccessful)
       })
     })
-    const iterator = await nano.stream({
+    const iterator = await nano.chat().stream({
       body: { model: 'chatgpt-4o-latest', messages: [{ role: 'user', content: 'bar' }] }
     })
 

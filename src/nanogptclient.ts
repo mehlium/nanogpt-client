@@ -17,11 +17,16 @@ interface NanoGPTClientConfig {
   client?: Client
 }
 
+type StreamType = <ThrowOnError extends boolean = false>(
+  options: Options<CreateChatCompletionData, ThrowOnError>
+) => Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>>
+
 interface Chat {
   simple: (message: string, model: ChatModel) => Promise<string | undefined>
   advanced: <ThrowOnError extends boolean = false>(
     options: Options<CreateChatCompletionData, ThrowOnError>
   ) => RequestResult<CreateChatCompletionResponse, CreateChatCompletionError, ThrowOnError>
+  stream: StreamType
 }
 
 export class NanoGPTClient {
@@ -55,7 +60,24 @@ export class NanoGPTClient {
         createChatCompletion({
           ...options,
           client: options.client || this.client
+        }),
+      stream: async <ThrowOnError extends boolean = false>(
+        options: Options<CreateChatCompletionData, ThrowOnError>
+      ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> => {
+        const headers = {
+          'Content-Type': 'text/event-stream',
+          Accept: 'text/event-stream',
+          ...options.headers
+        }
+        const response = await createChatCompletion({
+          ...options,
+          body: { ...options.body, stream: true },
+          headers: headers,
+          client: options.client || this.streamClient
         })
+        console.log('here')
+        return bodyToAsyncGenerator(response.response)
+      }
     }
   }
 
@@ -67,14 +89,12 @@ export class NanoGPTClient {
       Accept: 'text/event-stream',
       ...options.headers
     }
-    return this.chat()
-      .advanced({
-        ...options,
-        body: { ...options.body, stream: true },
-        headers: headers,
-        client: options.client || this.streamClient
-      })
-      .then((response) => bodyToAsyncGenerator(response.response))
+    return createChatCompletion({
+      ...options,
+      body: { ...options.body, stream: true },
+      headers: headers,
+      client: options.client || this.streamClient
+    }).then((response) => bodyToAsyncGenerator(response.response))
   }
 
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
