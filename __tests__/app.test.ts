@@ -70,7 +70,7 @@ describe('NanoGPTClient', () => {
     assert.equal(data?.data?.length, 2)
     assert.equal(error, undefined)
   })
-  test('stream successful', async () => {
+  test('chat().stream() successful', async () => {
     const nano = new NanoGPTClient({
       apiKey: 'test-key',
       client: createClient({
@@ -78,9 +78,12 @@ describe('NanoGPTClient', () => {
         fetch: (request: Request) => mockStreamResponse(streamSuccessful)
       })
     })
-    const iterator = await nano.chat().stream({
-      body: { model: 'chatgpt-4o-latest', messages: [{ role: 'user', content: 'bar' }] }
-    })
+    const iterator = await nano
+      .chat()
+      .stream()
+      .advanced({
+        body: { model: 'chatgpt-4o-latest', messages: [{ role: 'user', content: 'bar' }] }
+      })
 
     const yielded: (CreateChatCompletionResponse | undefined)[] = []
     let result = await iterator.next()

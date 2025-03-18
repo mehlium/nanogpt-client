@@ -21,12 +21,16 @@ type StreamType = <ThrowOnError extends boolean = false>(
   options: Options<CreateChatCompletionData, ThrowOnError>
 ) => Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>>
 
+interface Stream {
+  advanced: StreamType
+}
+
 interface Chat {
   simple: (message: string, model: ChatModel) => Promise<string | undefined>
   advanced: <ThrowOnError extends boolean = false>(
     options: Options<CreateChatCompletionData, ThrowOnError>
   ) => RequestResult<CreateChatCompletionResponse, CreateChatCompletionError, ThrowOnError>
-  stream: StreamType
+  stream: () => Stream
 }
 
 export class NanoGPTClient {
@@ -61,40 +65,27 @@ export class NanoGPTClient {
           ...options,
           client: options.client || this.client
         }),
-      stream: async <ThrowOnError extends boolean = false>(
-        options: Options<CreateChatCompletionData, ThrowOnError>
-      ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> => {
-        const headers = {
-          'Content-Type': 'text/event-stream',
-          Accept: 'text/event-stream',
-          ...options.headers
+      stream: () => {
+        return {
+          advanced: async <ThrowOnError extends boolean = false>(
+            options: Options<CreateChatCompletionData, ThrowOnError>
+          ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> => {
+            const headers = {
+              'Content-Type': 'text/event-stream',
+              Accept: 'text/event-stream',
+              ...options.headers
+            }
+            const response = await createChatCompletion({
+              ...options,
+              body: { ...options.body, stream: true },
+              headers: headers,
+              client: options.client || this.streamClient
+            })
+            return bodyToAsyncGenerator(response.response)
+          }
         }
-        const response = await createChatCompletion({
-          ...options,
-          body: { ...options.body, stream: true },
-          headers: headers,
-          client: options.client || this.streamClient
-        })
-        console.log('here')
-        return bodyToAsyncGenerator(response.response)
       }
     }
-  }
-
-  async stream<ThrowOnError extends boolean = false>(
-    options: Options<CreateChatCompletionData, ThrowOnError>
-  ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> {
-    const headers = {
-      'Content-Type': 'text/event-stream',
-      Accept: 'text/event-stream',
-      ...options.headers
-    }
-    return createChatCompletion({
-      ...options,
-      body: { ...options.body, stream: true },
-      headers: headers,
-      client: options.client || this.streamClient
-    }).then((response) => bodyToAsyncGenerator(response.response))
   }
 
   image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
