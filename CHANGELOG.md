@@ -1,5 +1,11 @@
 # nanogpt-client
 
+## 0.3.0
+
+### Minor Changes
+
+- af4081e: Simplifies chat api
+
 ## 0.2.0
 
 ### Minor Changes
