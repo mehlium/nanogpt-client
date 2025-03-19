@@ -53,10 +53,10 @@ export async function* bodyToAsyncGenerator<T>(
 export async function* bodyToAsyncStringGenerator(
   response: Response
 ): AsyncGenerator<string | undefined> {
-  yield* bodyToAsyncGenerator<string>(
-    response,
-    (value: CreateChatCompletionResponse) => value?.choices?.[0]?.delta?.content
-  )
+  yield* bodyToAsyncGenerator<string>(response, (value: CreateChatCompletionResponse) => {
+    const chunk = value?.choices?.[0]
+    return chunk?.finish_reason ? '' : chunk?.delta?.content
+  })
 }
 export async function* bodyToAsyncChatCompletionGenerator(
   response: Response
