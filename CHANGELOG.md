@@ -1,5 +1,11 @@
 # nanogpt-client
 
+## 0.4.0
+
+### Minor Changes
+
+- 138ce35: Adds simple streaming support
+
 ## 0.3.0
 
 ### Minor Changes
