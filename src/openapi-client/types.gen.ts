@@ -432,6 +432,13 @@ export type Message = {
   content?: string
 }
 
+export type Delta = {
+  /**
+   * The content of the delta.
+   */
+  content?: string
+}
+
 export type PaymentSource = 'XNO'
 
 export const PaymentSource = {
@@ -642,6 +649,7 @@ export type CreateChatCompletionResponses = {
        */
       index?: number
       message?: Message
+      delta?: Delta
       /**
        * Reason the generation was stopped.
        */

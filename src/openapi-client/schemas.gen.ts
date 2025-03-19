@@ -233,6 +233,16 @@ export const MessageSchema = {
   }
 } as const
 
+export const DeltaSchema = {
+  type: 'object',
+  properties: {
+    content: {
+      type: 'string',
+      description: 'The content of the delta.'
+    }
+  }
+} as const
+
 export const PaymentSourceSchema = {
   type: 'string',
   enum: ['XNO']

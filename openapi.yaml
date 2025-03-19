@@ -395,6 +395,13 @@ components:
         content:
           type: string
           description: The content of the message.
+    Delta:
+      type: object
+      properties:
+        content:
+          type: string
+          description: The content of the delta.
+
     PaymentSource:
       type: string
       enum:
@@ -493,6 +500,8 @@ paths:
                           description: Index of the generated choice.
                         message:
                           $ref: '#/components/schemas/Message'
+                        delta:
+                          $ref: '#/components/schemas/Delta'
                         finish_reason:
                           type: string
                           description: Reason the generation was stopped.
