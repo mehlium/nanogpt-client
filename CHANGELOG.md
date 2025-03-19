@@ -1,5 +1,11 @@
 # nanogpt-client
 
+## 0.5.0
+
+### Minor Changes
+
+- 4049ee0: Streamline image api
+
 ## 0.4.0
 
 ### Minor Changes
