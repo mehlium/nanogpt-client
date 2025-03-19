@@ -9,7 +9,11 @@ import {
   ModelsData
 } from './openapi-client/types.gen.js'
 import { client } from './openapi-client/client.gen.ts'
-import { bodyToAsyncGenerator } from './utils.ts'
+import {
+  bodyToAsyncChatCompletionGenerator,
+  bodyToAsyncGenerator,
+  bodyToAsyncStringGenerator
+} from './utils.ts'
 
 type APIKey = string
 interface NanoGPTClientConfig {
@@ -22,6 +26,10 @@ type StreamType = <ThrowOnError extends boolean = false>(
 ) => Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>>
 
 interface Stream {
+  simple: (
+    message: string,
+    model: ChatModel
+  ) => Promise<AsyncGenerator<string | undefined, any, any>>
   advanced: StreamType
 }
 
@@ -37,6 +45,10 @@ export class NanoGPTClient {
   client: Client
 
   private streamClient: Client
+  private streamHeaders: Record<string, string> = {
+    'Content-Type': 'text/event-stream',
+    Accept: 'text/event-stream'
+  }
 
   constructor(config: NanoGPTClientConfig) {
     this.client = createClient({
@@ -67,21 +79,31 @@ export class NanoGPTClient {
         }),
       stream: () => {
         return {
+          simple: async (
+            message: string,
+            model: ChatModel
+          ): Promise<AsyncGenerator<string | undefined, any, any>> => {
+            const response = await createChatCompletion({
+              body: {
+                model,
+                messages: [{ role: 'user', content: message }],
+                stream: true
+              },
+              headers: this.streamHeaders,
+              client: this.streamClient
+            })
+            return bodyToAsyncStringGenerator(response.response)
+          },
           advanced: async <ThrowOnError extends boolean = false>(
             options: Options<CreateChatCompletionData, ThrowOnError>
           ): Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>> => {
-            const headers = {
-              'Content-Type': 'text/event-stream',
-              Accept: 'text/event-stream',
-              ...options.headers
-            }
             const response = await createChatCompletion({
               ...options,
               body: { ...options.body, stream: true },
-              headers: headers,
+              headers: this.streamHeaders,
               client: options.client || this.streamClient
             })
-            return bodyToAsyncGenerator(response.response)
+            return bodyToAsyncChatCompletionGenerator(response.response)
           }
         }
       }

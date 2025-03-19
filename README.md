@@ -13,6 +13,8 @@ npm install nanogpt-client
 
 ## How to use
 
+### Simple chat
+
 ```javascript
 import { NanoGPTClient } from 'nanogpt-client'
 ;(async () => {
@@ -21,6 +23,21 @@ import { NanoGPTClient } from 'nanogpt-client'
   })
   const textResponse = await nano.chat().simple('test', 'chatgpt-4o-latest')
   console.log(textResponse)
+})()
+```
+
+### Streaming chat
+
+```javascript
+import { NanoGPTClient } from 'nanogpt-client'
+;(async () => {
+  const nano = new NanoGPTClient({
+    apiKey: '<NanoGPT API Key>'
+  })
+  const stream = await nano.chat().stream().simple('test', 'chatgpt-4o-latest')
+  for await (const part of stream) {
+    console.log(part) // Prints each response
+  }
 })()
 ```
 
