@@ -40,16 +40,23 @@ describe('NanoGPTClient', () => {
     assert.equal(error, undefined)
   })
 
-  test('image successful', async (t) => {
+  test('image().simple() successful', async (t) => {
     const nano = new NanoGPTClient({
       apiKey: 'test-key',
       client: mockedClient(imageSuccesful)
     })
-    const { data, error } = await nano.image({
+    const response = await nano.image().simple('cat with glasses', 'fast-sdxl')
+    assert.equal(response, imageSuccesful.data[0].b64_json)
+  })
+  test('image().advanced() successful', async (t) => {
+    const nano = new NanoGPTClient({
+      apiKey: 'test-key',
+      client: mockedClient(imageSuccesful)
+    })
+    const { data, error } = await nano.image().advanced({
       body: {
         model: 'fast-sdxl',
         prompt: 'cat with glasses',
-        resolution: '32x32',
         width: 32,
         height: 32
       }
