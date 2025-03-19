@@ -1,7 +1,9 @@
 import { TextDecoder } from 'util'
 import { CreateChatCompletionResponse } from './openapi-client/types.gen.ts'
 
-export function mapMultiple(data: string): (CreateChatCompletionResponse | undefined)[] {
+export function mapToCreateChatCompletionResponse(
+  data: string
+): (CreateChatCompletionResponse | undefined)[] {
   return data
     .replaceAll('\n', '')
     .replaceAll('data: ', '\n')
@@ -17,20 +19,25 @@ export function mapMultiple(data: string): (CreateChatCompletionResponse | undef
     })
 }
 
-export async function* bodyToAsyncGenerator(
-  response: Response
-): AsyncGenerator<CreateChatCompletionResponse | undefined> {
+type Parser<T> = (value: CreateChatCompletionResponse) => T | undefined
+
+export async function* bodyToAsyncGenerator<T>(
+  response: Response,
+  parser: Parser<T>
+): AsyncGenerator<T | undefined> {
   const decoder: TextDecoder = new TextDecoder()
   if (response.body === null) {
     return undefined
   }
   const reader = response.body.getReader()
-  let finalValue: CreateChatCompletionResponse | undefined = undefined
+  let finalValue: T | undefined = undefined
   try {
     while (true) {
       const { done, value } = await reader.read()
       let mapped = decoder.decode(value)
-      const values = mapMultiple(mapped)
+      const values = mapToCreateChatCompletionResponse(mapped)
+        .filter((value) => value !== undefined)
+        .map(parser)
       if (done) {
         finalValue = values[values.length - 1]
         break
@@ -41,4 +48,21 @@ export async function* bodyToAsyncGenerator(
     reader.releaseLock()
   }
   return finalValue
+}
+
+export async function* bodyToAsyncStringGenerator(
+  response: Response
+): AsyncGenerator<string | undefined> {
+  yield* bodyToAsyncGenerator<string>(
+    response,
+    (value: CreateChatCompletionResponse) => value?.choices?.[0]?.delta?.content
+  )
+}
+export async function* bodyToAsyncChatCompletionGenerator(
+  response: Response
+): AsyncGenerator<CreateChatCompletionResponse | undefined> {
+  yield* bodyToAsyncGenerator<CreateChatCompletionResponse>(
+    response,
+    (value: CreateChatCompletionResponse) => value
+  )
 }
