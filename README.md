@@ -13,7 +13,9 @@ npm install nanogpt-client
 
 ## How to use
 
-### Simple chat
+### Chat
+
+#### Simple chat
 
 ```javascript
 import { NanoGPTClient } from 'nanogpt-client'
@@ -26,7 +28,7 @@ import { NanoGPTClient } from 'nanogpt-client'
 })()
 ```
 
-### Streaming chat
+#### Streaming chat
 
 ```javascript
 import { NanoGPTClient } from 'nanogpt-client'
@@ -38,6 +40,20 @@ import { NanoGPTClient } from 'nanogpt-client'
   for await (const part of stream) {
     console.log(part) // Prints each response
   }
+})()
+```
+
+### Images
+
+#### Simple image
+
+```javascript
+import { NanoGPTClient } from 'nanogpt-client'
+;(async () => {
+  const nano = new NanoGPTClient({
+    apiKey: '<NanoGPT API Key>'
+  })
+  const base64EncodedData = await nano.image().simple('Cat with glasses', 'fast-sdxl')
 })()
 ```
 
