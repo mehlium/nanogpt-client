@@ -6,6 +6,6 @@ import { streamSuccessful } from './fixtures.ts'
 describe('utils test', () => {
   test('mapMultiple', async (t) => {
     const mapped = mapToCreateChatCompletionResponse(streamSuccessful)
-    assert.equal(mapped.length, 4)
+    assert.equal(mapped.length, 17)
   })
 })

@@ -64,12 +64,45 @@ export const modelsSuccesful = {
   ]
 }
 
-export const streamSuccessful = `data: {"id":"chatcmpl-1742215744950","object":"chat.completion.chunk","created":1742215744,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":"Hello"},"finish_reason":null}
+export const streamSuccessful = `data: {"id":"chatcmpl-1742375111359","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":"It"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111360","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" looks"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111377","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" like"},"finish_reason":null}
 ]}
 
-data: {"id":"chatcmpl-1742215744952","object":"chat.completion.chunk","created":1742215744,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":"!"},"finish_reason":null}]}
+data: {"id":"chatcmpl-1742375111378","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" you're"},"finish_reason":null}]}
 
-data: {"id":"chatcmpl-1742215744952","object":"chat.completion.chunk","created":1742215744,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" It"},"finish_reason":null}]}
+data: {"id":"chatcmpl-1742375111390","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" testing"},"finish_reason":null}]}
 
-data: {"id":"chatcmpl-1742215744953","object":"chat.completion.chunk","created":1742215744,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" seems"},"finish_reason":null
-}]}`
+
+data: {"id":"chatcmpl-1742375111550","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":"."},"finish_reason":null}]}
+
+
+data: {"id":"chatcmpl-1742375111550","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" Let"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111555","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" me"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111556","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" know"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111556","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" how"},"finish_reason":null}]}
+
+
+data: {"id":"chatcmpl-1742375111576","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" I"},"finish_reason":null}]}
+
+
+data: {"id":"chatcmpl-1742375111576","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" can"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111577","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" assist"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111577","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" you"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111577","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":"!"},"finish_reason":null}]}
+
+data: {"id":"chatcmpl-1742375111578","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{"content":" 😊"},"finish_reason":null}]}
+
+
+data: {"id":"chatcmpl-1742375111656","object":"chat.completion.chunk","created":1742375111,"model":"chatgpt-4o-latest","choices":[{"index":0,"delta":{},"finish_reason":"stop"}],"nanoGPT":{"cost":0.0007212155963302753,"inputTokens":8,"outputTokens":29,"paymentSource":"XNO"}}
+
+
+`

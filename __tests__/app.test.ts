@@ -85,7 +85,7 @@ describe('NanoGPTClient', () => {
     for await (const part of iterator) {
       response += part
     }
-    assert.equal(response, 'Hello! It seems')
+    assert.equal(response, `It looks like you're testing. Let me know how I can assist you! 😊`)
   })
   test('chat().stream().advanced() successful', async () => {
     const nano = new NanoGPTClient({
@@ -108,6 +108,6 @@ describe('NanoGPTClient', () => {
       yielded.push(result.value)
       result = await iterator.next()
     }
-    assert.equal(yielded.length, 4)
+    assert.equal(yielded.length, 17)
   })
 })
