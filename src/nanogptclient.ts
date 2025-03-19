@@ -6,6 +6,9 @@ import {
   CreateChatCompletionError,
   CreateChatCompletionResponse,
   GenerateImageData,
+  GenerateImageError,
+  GenerateImageResponse,
+  ImageModel,
   ModelsData
 } from './openapi-client/types.gen.js'
 import { client } from './openapi-client/client.gen.ts'
@@ -41,7 +44,19 @@ interface Chat {
   stream: () => Stream
 }
 
-export class NanoGPTClient {
+interface Image {
+  simple: (prompt: string, model: ImageModel) => Promise<string | undefined>
+  advanced: <ThrowOnError extends boolean = false>(
+    options: Options<GenerateImageData, ThrowOnError>
+  ) => RequestResult<GenerateImageResponse, GenerateImageError, ThrowOnError>
+}
+
+interface APIClient {
+  chat: () => Chat
+  image: () => Image
+}
+
+export class NanoGPTClient implements APIClient {
   client: Client
 
   private streamClient: Client
@@ -110,15 +125,34 @@ export class NanoGPTClient {
     }
   }
 
-  image<ThrowOnError extends boolean = false>(options: Options<GenerateImageData, ThrowOnError>) {
-    return generateImage({
-      ...options,
-      body: {
-        ...options.body,
-        resolution: options.body.resolution || `${options.body.width}x${options.body.height}`
+  image(): Image {
+    return {
+      simple: async (prompt: string, model: ImageModel) => {
+        const defaultDimension = 1024
+        const response = await generateImage({
+          body: {
+            prompt,
+            model,
+            width: defaultDimension,
+            height: defaultDimension,
+            resolution: `${defaultDimension}x${defaultDimension}`
+          },
+          client: this.client
+        })
+        return response.data?.data?.[0].b64_json
       },
-      client: options.client || this.client
-    })
+      advanced: <ThrowOnError extends boolean = false>(
+        options: Options<GenerateImageData, ThrowOnError>
+      ) =>
+        generateImage({
+          ...options,
+          body: {
+            ...options.body,
+            resolution: options.body.resolution || `${options.body.width}x${options.body.height}`
+          },
+          client: options.client || this.client
+        })
+    }
   }
 
   models<ThrowOnError extends boolean = false>(options: Options<ModelsData, ThrowOnError>) {
