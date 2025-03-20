@@ -79,7 +79,7 @@ export class NanoGPTClient implements APIClient {
               ...options,
               body: { ...options.body, stream: true },
               headers: this.streamHeaders,
-              client: options.client || this.streamClient
+              client: this.streamClient
             })
             return bodyToAsyncChatCompletionGenerator(response.response)
           }
@@ -113,20 +113,19 @@ export class NanoGPTClient implements APIClient {
             ...options.body,
             resolution: options.body.resolution || `${options.body.width}x${options.body.height}`
           },
-          client: options.client || this.client
+          client: this.client
         })
     }
   }
 
-  models<ThrowOnError extends boolean = false>(options: Options<ModelsData, ThrowOnError>) {
+  models() {
     return models({
-      ...options,
-      client: options.client || this.client
+      client: this.client
     })
   }
-  balance<ThrowOnError extends boolean = false>(options?: Options<BalanceData, ThrowOnError>) {
+  balance() {
     return balance({
-      client: options?.client || this.client
+      client: this.client
     })
   }
 }
