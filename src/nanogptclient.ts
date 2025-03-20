@@ -1,4 +1,4 @@
-import { Client, createClient, RequestResult } from '@hey-api/client-fetch'
+import { Client, createClient } from '@hey-api/client-fetch'
 import {
   balance,
   createChatCompletion,
@@ -10,58 +10,14 @@ import {
   BalanceData,
   ChatModel,
   CreateChatCompletionData,
-  CreateChatCompletionError,
   CreateChatCompletionResponse,
   GenerateImageData,
-  GenerateImageError,
-  GenerateImageResponse,
   ImageModel,
   ModelsData
 } from './openapi-client/types.gen.js'
 import { client } from './openapi-client/client.gen.ts'
-import {
-  bodyToAsyncChatCompletionGenerator,
-  bodyToAsyncGenerator,
-  bodyToAsyncStringGenerator
-} from './utils.ts'
-
-type APIKey = string
-interface NanoGPTClientConfig {
-  apiKey: APIKey
-  client?: Client
-}
-
-type StreamType = <ThrowOnError extends boolean = false>(
-  options: Options<CreateChatCompletionData, ThrowOnError>
-) => Promise<AsyncGenerator<CreateChatCompletionResponse | undefined, any, any>>
-
-interface Stream {
-  simple: (
-    message: string,
-    model: ChatModel
-  ) => Promise<AsyncGenerator<string | undefined, any, any>>
-  advanced: StreamType
-}
-
-interface Chat {
-  simple: (message: string, model: ChatModel) => Promise<string | undefined>
-  advanced: <ThrowOnError extends boolean = false>(
-    options: Options<CreateChatCompletionData, ThrowOnError>
-  ) => RequestResult<CreateChatCompletionResponse, CreateChatCompletionError, ThrowOnError>
-  stream: () => Stream
-}
-
-interface Image {
-  simple: (prompt: string, model: ImageModel) => Promise<string | undefined>
-  advanced: <ThrowOnError extends boolean = false>(
-    options: Options<GenerateImageData, ThrowOnError>
-  ) => RequestResult<GenerateImageResponse, GenerateImageError, ThrowOnError>
-}
-
-interface APIClient {
-  chat: () => Chat
-  image: () => Image
-}
+import { bodyToAsyncChatCompletionGenerator, bodyToAsyncStringGenerator } from './utils.ts'
+import { APIClient, Chat, Image, NanoGPTClientConfig } from './types.ts'
 
 export class NanoGPTClient implements APIClient {
   client: Client
@@ -123,7 +79,7 @@ export class NanoGPTClient implements APIClient {
               ...options,
               body: { ...options.body, stream: true },
               headers: this.streamHeaders,
-              client: options.client || this.streamClient
+              client: this.streamClient
             })
             return bodyToAsyncChatCompletionGenerator(response.response)
           }
@@ -157,20 +113,19 @@ export class NanoGPTClient implements APIClient {
             ...options.body,
             resolution: options.body.resolution || `${options.body.width}x${options.body.height}`
           },
-          client: options.client || this.client
+          client: this.client
         })
     }
   }
 
-  models<ThrowOnError extends boolean = false>(options: Options<ModelsData, ThrowOnError>) {
+  models() {
     return models({
-      ...options,
-      client: options.client || this.client
+      client: this.client
     })
   }
-  balance<ThrowOnError extends boolean = false>(options?: Options<BalanceData, ThrowOnError>) {
+  balance() {
     return balance({
-      client: options?.client || this.client
+      client: this.client
     })
   }
 }
