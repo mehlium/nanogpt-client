@@ -468,6 +468,11 @@ export const _Object = {
 export type Created = number
 
 /**
+ * Nano address
+ */
+export type NanoAddress = string
+
+/**
  * Controls randomness (0 to 2).
  */
 export type TemperatureParam = number
@@ -828,6 +833,69 @@ export type ModelsResponses = {
 }
 
 export type ModelsResponse = ModelsResponses[keyof ModelsResponses]
+
+export type BalanceData = {
+  body?: never
+  path?: never
+  query?: never
+  url: '/check-nano-balance'
+}
+
+export type BalanceErrors = {
+  /**
+   * Invalid request.
+   */
+  400: {
+    /**
+     * Details about the invalid request.
+     */
+    error?: string
+  }
+  /**
+   * Unauthorized.
+   */
+  401: {
+    /**
+     * Authentication error.
+     */
+    error?: string
+  }
+  /**
+   * Server error.
+   */
+  500: {
+    /**
+     * Server-side error details.
+     */
+    error?: string
+  }
+}
+
+export type BalanceError = BalanceErrors[keyof BalanceErrors]
+
+export type BalanceResponses = {
+  /**
+   * Balance received successfully.
+   */
+  200: {
+    /**
+     * Remaining balance for the account.
+     */
+    balance?: unknown
+    /**
+     * Receivable for the account.
+     */
+    receivable?: unknown
+    /**
+     * Earned for the account.
+     */
+    earned?: unknown
+    nanoDepositAddress?: NanoAddress
+    nanoReturnAddress?: NanoAddress
+  }
+}
+
+export type BalanceResponse = BalanceResponses[keyof BalanceResponses]
 
 export type ClientOptions = {
   baseUrl: 'https://nano-gpt.com/api' | (string & {})

@@ -267,3 +267,8 @@ export const CreatedSchema = {
   type: 'integer',
   description: 'Timestamp when the completion was created.'
 } as const
+
+export const NanoAddressSchema = {
+  type: 'string',
+  description: 'Nano address'
+} as const
