@@ -1,5 +1,15 @@
 # nanogpt-client
 
+## 0.6.0
+
+### Minor Changes
+
+- d110f8d: Adds balance endpoint
+
+### Patch Changes
+
+- d10116a: Extracts types and simplifies sdk usage
+
 ## 0.5.0
 
 ### Minor Changes
