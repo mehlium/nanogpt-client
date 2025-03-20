@@ -420,6 +420,9 @@ components:
     Created:
       type: integer
       description: Timestamp when the completion was created.
+    NanoAddress:
+      type: string
+      description: Nano address
 paths:
   /v1/chat/completions:
     post:
@@ -691,6 +694,64 @@ paths:
                         owned_by:
                           type: string
                           description: Organization / owner of the model.
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Details about the invalid request.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Authentication error.
+        '500':
+          description: Server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Server-side error details.
+  /check-nano-balance:
+    post:
+      summary: Check nano balance for account
+      description: Returns balance, receivable and earned for the account
+      operationId: balance
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Balance received successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: float
+                    description: Remaining balance for the account.
+                  receivable:
+                    type: float
+                    description: Receivable for the account.
+                  earned:
+                    type: float
+                    description: Earned for the account.
+                  nanoDepositAddress:
+                    $ref: '#/components/schemas/NanoAddress'
+                  nanoReturnAddress:
+                    $ref: '#/components/schemas/NanoAddress'
         '400':
           description: Invalid request.
           content:

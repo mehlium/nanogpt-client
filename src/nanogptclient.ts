@@ -1,6 +1,13 @@
 import { Client, createClient, RequestResult } from '@hey-api/client-fetch'
-import { createChatCompletion, generateImage, models, Options } from './openapi-client/sdk.gen.js'
 import {
+  balance,
+  createChatCompletion,
+  generateImage,
+  models,
+  Options
+} from './openapi-client/sdk.gen.js'
+import {
+  BalanceData,
   ChatModel,
   CreateChatCompletionData,
   CreateChatCompletionError,
@@ -159,6 +166,11 @@ export class NanoGPTClient implements APIClient {
     return models({
       ...options,
       client: options.client || this.client
+    })
+  }
+  balance<ThrowOnError extends boolean = false>(options?: Options<BalanceData, ThrowOnError>) {
+    return balance({
+      client: options?.client || this.client
     })
   }
 }

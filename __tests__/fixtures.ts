@@ -106,3 +106,10 @@ data: {"id":"chatcmpl-1742375111656","object":"chat.completion.chunk","created":
 
 
 `
+
+export const balanceSuccessful = {
+  nanoDepositAddress: 'nano_3ipmci1h6y3cghmh563w6odamx7awwh7rzkuhndtzy1ipn8onryns57h6g6e',
+  nanoReturnAddress: 'nano_3nqzrhkxhgtcsstowjkoi6a3u5sdgc6w1q75kx8qb4sebgnz9cnfojxg47cx',
+  balance: '0.50778860',
+  earned: '0.00000000'
+}

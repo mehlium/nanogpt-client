@@ -4,7 +4,13 @@ import { CreateChatCompletionResponse, NanoGPTClient } from '../src/index.ts'
 import { client } from '../src/openapi-client/client.gen.ts'
 import { createClient } from '@hey-api/client-fetch'
 import { mockResponse, mockStreamResponse } from './test-utils.ts'
-import { chatSuccesful, imageSuccesful, modelsSuccesful, streamSuccessful } from './fixtures.ts'
+import {
+  balanceSuccessful,
+  chatSuccesful,
+  imageSuccesful,
+  modelsSuccesful,
+  streamSuccessful
+} from './fixtures.ts'
 
 const mockedClient = (json: any) => {
   return createClient({
@@ -116,5 +122,21 @@ describe('NanoGPTClient', () => {
       result = await iterator.next()
     }
     assert.equal(yielded.length, 17)
+  })
+
+  test('balance() successful', async () => {
+    const nano = new NanoGPTClient({
+      apiKey: 'test-key',
+      client: mockedClient(balanceSuccessful)
+    })
+    const {
+      data: { balance, nanoDepositAddress }
+    } = await nano.balance()
+
+    assert.equal(balance, '0.50778860')
+    assert.equal(
+      nanoDepositAddress,
+      'nano_3ipmci1h6y3cghmh563w6odamx7awwh7rzkuhndtzy1ipn8onryns57h6g6e'
+    )
   })
 })

@@ -10,7 +10,10 @@ import type {
   GenerateImageError,
   ModelsData,
   ModelsResponse,
-  ModelsError
+  ModelsError,
+  BalanceData,
+  BalanceResponse,
+  BalanceError
 } from './types.gen.js'
 import { client as _heyApiClient } from './client.gen.js'
 
@@ -104,6 +107,25 @@ export const models = <ThrowOnError extends boolean = false>(
       }
     ],
     url: '/v1/models',
+    ...options
+  })
+}
+
+/**
+ * Check nano balance for account
+ * Returns balance, receivable and earned for the account
+ */
+export const balance = <ThrowOnError extends boolean = false>(
+  options?: Options<BalanceData, ThrowOnError>
+) => {
+  return (options?.client ?? _heyApiClient).post<BalanceResponse, BalanceError, ThrowOnError>({
+    security: [
+      {
+        name: 'x-api-key',
+        type: 'apiKey'
+      }
+    ],
+    url: '/check-nano-balance',
     ...options
   })
 }
