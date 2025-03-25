@@ -429,7 +429,29 @@ export type Message = {
   /**
    * The content of the message.
    */
-  content?: string
+  content?: TextContent | MultipartContent
+}
+
+/**
+ * The content of the message.
+ */
+export type TextContent = string
+
+/**
+ * List of parts to send
+ */
+export type MultipartContent = Array<MultipartText | MultipartImageUrl>
+
+export type MultipartText = {
+  type: 'text'
+  text: string
+}
+
+export type MultipartImageUrl = {
+  type: 'image_url'
+  image_url?: {
+    url: string
+  }
 }
 
 export type Delta = {

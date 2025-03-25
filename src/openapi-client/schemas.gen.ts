@@ -227,10 +227,72 @@ export const MessageSchema = {
       enum: ['user', 'assistant', 'system']
     },
     content: {
-      type: 'string',
+      type: 'object',
+      oneOf: [
+        {
+          $ref: '#/components/schemas/TextContent'
+        },
+        {
+          $ref: '#/components/schemas/MultipartContent'
+        }
+      ],
       description: 'The content of the message.'
     }
   }
+} as const
+
+export const TextContentSchema = {
+  type: 'string',
+  description: 'The content of the message.'
+} as const
+
+export const MultipartContentSchema = {
+  type: 'array',
+  description: 'List of parts to send',
+  items: {
+    oneOf: [
+      {
+        $ref: '#/components/schemas/MultipartText'
+      },
+      {
+        $ref: '#/components/schemas/MultipartImageUrl'
+      }
+    ]
+  }
+} as const
+
+export const MultipartTextSchema = {
+  type: 'object',
+  properties: {
+    type: {
+      type: 'string',
+      enum: ['text']
+    },
+    text: {
+      type: 'string'
+    }
+  },
+  required: ['type', 'text']
+} as const
+
+export const MultipartImageUrlSchema = {
+  type: 'object',
+  properties: {
+    type: {
+      type: 'string',
+      enum: ['image_url']
+    },
+    image_url: {
+      type: 'object',
+      properties: {
+        url: {
+          type: 'string'
+        }
+      },
+      required: ['url']
+    }
+  },
+  required: ['type', 'text']
 } as const
 
 export const DeltaSchema = {
