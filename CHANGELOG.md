@@ -1,5 +1,11 @@
 # nanogpt-client
 
+## 0.7.0
+
+### Minor Changes
+
+- c176d7c: Adds means of passing image to the chat
+
 ## 0.6.0
 
 ### Minor Changes
