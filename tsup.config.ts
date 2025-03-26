@@ -24,5 +24,26 @@ export default defineConfig([
     cjsInterop: true,
     keepNames: true,
     skipNodeModulesBundle: false
+  },
+  // Bin files
+  {
+    entryPoints: ['src/bin/fix-imports.ts'],
+    format: ['cjs'],
+    outDir: 'dist/bin',
+    clean: true,
+    minify: false,
+    sourcemap: false,
+    bundle: true,
+    outExtension(ctx) {
+      return {
+        js: '.cjs' // Ensure bin files have .js extension
+      }
+    },
+    target: 'es2022',
+    platform: 'node',
+    tsconfig: './tsconfig.json',
+    cjsInterop: true,
+    keepNames: true,
+    skipNodeModulesBundle: false
   }
 ])

@@ -32,7 +32,7 @@
   ],
   "scripts": {
     "build": "tsc && tsup",
-    "generate": "openapi-ts",
+    "generate": "openapi-ts && npm run fix-imports",
     "lint": "eslint . && npm run lint:lockfile",
     "lint:fix": "eslint . --fix",
     "lint:lockfile": "lockfile-lint --path package-lock.json --validate-https --allowed-hosts npm yarn",
@@ -40,7 +40,8 @@
     "test:watch": "c8 node --loader ts-node/esm --test --watch __tests__/**",
     "coverage:view": "open coverage/lcov-report/index.html",
     "version": "changeset version",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "fix-imports": "node dist/bin/fix-imports.cjs"
   },
   "publishConfig": {
     "provenance": true,
