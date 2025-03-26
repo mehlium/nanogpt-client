@@ -43,6 +43,50 @@ import { NanoGPTClient } from 'nanogpt-client'
 })()
 ```
 
+#### Send an image to the model
+
+```javascript
+import { NanoGPTClient } from 'nanogpt-client'
+import fs from 'node:fs'
+
+const imagePath = './image-to-describe.png'
+const base64Image = fs.readFileSync(imagePath, 'base64')
+
+;(async () => {
+  const nano = new NanoGPTClient({
+    apiKey: '<NanoGPT API Key>'
+  })
+  const {
+    data: {
+      choices: [
+        {
+          message: { content }
+        }
+      ]
+    }
+  } = await nano.chat().advanced({
+    body: {
+      model: 'meta-llama/llama-3.2-90b-vision-instruct',
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: "What's in this image?" },
+            {
+              type: 'image_url',
+              image_url: {
+                url: `data:image/jpeg;base64,${base64Image}`
+              }
+            }
+          ]
+        }
+      ]
+    }
+  })
+  console.log(JSON.stringify(content))
+})()
+```
+
 ### Images
 
 #### Simple image
