@@ -421,15 +421,56 @@ export const ImageModel = {
  */
 export type NegativePrompt = string
 
+/**
+ * The role of the message sender (e.g., 'user', 'assistant').
+ */
+export type Role = 'user' | 'assistant' | 'system'
+
+/**
+ * The role of the message sender (e.g., 'user', 'assistant').
+ */
+export const Role = {
+  USER: 'user',
+  ASSISTANT: 'assistant',
+  SYSTEM: 'system'
+} as const
+
 export type Message = {
-  /**
-   * The role of the message sender (e.g., 'user', 'assistant').
-   */
-  role?: 'user' | 'assistant' | 'system'
+  role?: Role
   /**
    * The content of the message.
    */
-  content?: string
+  content?: TextContent
+}
+
+/**
+ * The content of the message.
+ */
+export type TextContent = string
+
+export type CompoundMessage = {
+  role?: Role
+  /**
+   * The content of the message.
+   */
+  content?: TextContent | MultipartContent
+}
+
+/**
+ * List of parts to send
+ */
+export type MultipartContent = Array<MultipartText | MultipartImageUrl>
+
+export type MultipartText = {
+  type: 'text'
+  text: string
+}
+
+export type MultipartImageUrl = {
+  type: 'image_url'
+  image_url: {
+    url: string
+  }
 }
 
 export type Delta = {
@@ -579,7 +620,7 @@ export type ToolChoiceParam = string
 export type CreateChatCompletionData = {
   body: {
     model?: ChatModel
-    messages?: Array<Message>
+    messages?: Array<CompoundMessage>
     temperature?: TemperatureParam
     max_tokens?: MaxTokensParam
     stream?: StreamParam

@@ -218,19 +218,103 @@ export const NegativePromptSchema = {
   description: 'Things to exclude in the generated image.'
 } as const
 
+export const RoleSchema = {
+  type: 'string',
+  description: "The role of the message sender (e.g., 'user', 'assistant').",
+  enum: ['user', 'assistant', 'system']
+} as const
+
 export const MessageSchema = {
   type: 'object',
   properties: {
     role: {
-      type: 'string',
-      description: "The role of the message sender (e.g., 'user', 'assistant').",
-      enum: ['user', 'assistant', 'system']
+      $ref: '#/components/schemas/Role'
     },
     content: {
-      type: 'string',
+      type: 'object',
+      oneOf: [
+        {
+          $ref: '#/components/schemas/TextContent'
+        }
+      ],
       description: 'The content of the message.'
     }
   }
+} as const
+
+export const TextContentSchema = {
+  type: 'string',
+  description: 'The content of the message.'
+} as const
+
+export const CompoundMessageSchema = {
+  type: 'object',
+  properties: {
+    role: {
+      $ref: '#/components/schemas/Role'
+    },
+    content: {
+      type: 'object',
+      oneOf: [
+        {
+          $ref: '#/components/schemas/TextContent'
+        },
+        {
+          $ref: '#/components/schemas/MultipartContent'
+        }
+      ],
+      description: 'The content of the message.'
+    }
+  }
+} as const
+
+export const MultipartContentSchema = {
+  type: 'array',
+  description: 'List of parts to send',
+  items: {
+    oneOf: [
+      {
+        $ref: '#/components/schemas/MultipartText'
+      },
+      {
+        $ref: '#/components/schemas/MultipartImageUrl'
+      }
+    ]
+  }
+} as const
+
+export const MultipartTextSchema = {
+  type: 'object',
+  properties: {
+    type: {
+      type: 'string',
+      enum: ['text']
+    },
+    text: {
+      type: 'string'
+    }
+  },
+  required: ['type', 'text']
+} as const
+
+export const MultipartImageUrlSchema = {
+  type: 'object',
+  properties: {
+    type: {
+      type: 'string',
+      enum: ['image_url']
+    },
+    image_url: {
+      type: 'object',
+      properties: {
+        url: {
+          type: 'string'
+        }
+      },
+      required: ['url']
+    }
+  },
+  required: ['type', 'image_url']
 } as const
 
 export const DeltaSchema = {
