@@ -218,13 +218,40 @@ export const NegativePromptSchema = {
   description: 'Things to exclude in the generated image.'
 } as const
 
+export const RoleSchema = {
+  type: 'string',
+  description: "The role of the message sender (e.g., 'user', 'assistant').",
+  enum: ['user', 'assistant', 'system']
+} as const
+
 export const MessageSchema = {
   type: 'object',
   properties: {
     role: {
-      type: 'string',
-      description: "The role of the message sender (e.g., 'user', 'assistant').",
-      enum: ['user', 'assistant', 'system']
+      $ref: '#/components/schemas/Role'
+    },
+    content: {
+      type: 'object',
+      oneOf: [
+        {
+          $ref: '#/components/schemas/TextContent'
+        }
+      ],
+      description: 'The content of the message.'
+    }
+  }
+} as const
+
+export const TextContentSchema = {
+  type: 'string',
+  description: 'The content of the message.'
+} as const
+
+export const CompoundMessageSchema = {
+  type: 'object',
+  properties: {
+    role: {
+      $ref: '#/components/schemas/Role'
     },
     content: {
       type: 'object',
@@ -239,11 +266,6 @@ export const MessageSchema = {
       description: 'The content of the message.'
     }
   }
-} as const
-
-export const TextContentSchema = {
-  type: 'string',
-  description: 'The content of the message.'
 } as const
 
 export const MultipartContentSchema = {
@@ -292,7 +314,7 @@ export const MultipartImageUrlSchema = {
       required: ['url']
     }
   },
-  required: ['type', 'text']
+  required: ['type', 'image_url']
 } as const
 
 export const DeltaSchema = {
