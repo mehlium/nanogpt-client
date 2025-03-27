@@ -1202,6 +1202,9 @@ paths:
                   paymentSource:
                     type: string
                     description: Payment method used
+                required:
+                  - runId
+                  - projectId
         '400':
           description: Invalid request
           content:
