@@ -3,7 +3,7 @@ import { createClient } from '@hey-api/client-fetch'
 import { mockResponse } from './test-utils.ts'
 import { client } from '../src/openapi-client/client.gen.ts'
 import { NanoGPTClient } from '../src/index.ts'
-import { generateVideoSuccessful } from './test-fixtures/video-fixtures.ts'
+import { generateVideoSuccessful } from './video-fixtures.ts'
 import assert from 'assert'
 
 const mockedClient = (json: any) => {
