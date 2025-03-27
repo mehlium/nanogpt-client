@@ -546,6 +546,573 @@ export type Created = number
 export type NanoAddress = string
 
 /**
+ * A fully-written script to skip AI script generation (takes precedence over prompt)
+ */
+export type ScriptStyle =
+  | 'default'
+  | 'engaging_conversational'
+  | 'kind_biography'
+  | 'hero_journey'
+  | 'emotional_story'
+  | 'dramatic_reveal'
+  | 'heartwarming_stories'
+  | 'educational_history'
+  | 'news_brief'
+
+/**
+ * A fully-written script to skip AI script generation (takes precedence over prompt)
+ */
+export const ScriptStyle = {
+  /**
+   * Classic story with traditional narrative structure
+   */
+  DEFAULT: 'default',
+  /**
+   * Casual, dialogue-rich storytelling
+   */
+  ENGAGING_CONVERSATIONAL: 'engaging_conversational',
+  /**
+   * Biographical style with personal touch
+   */
+  KIND_BIOGRAPHY: 'kind_biography',
+  /**
+   * Epic narrative following hero's journey structure
+   */
+  HERO_JOURNEY: 'hero_journey',
+  /**
+   * Emotionally resonant narrative
+   */
+  EMOTIONAL_STORY: 'emotional_story',
+  /**
+   * Story with dramatic twists and reveals
+   */
+  DRAMATIC_REVEAL: 'dramatic_reveal',
+  /**
+   * Uplifting, feel-good narratives
+   */
+  HEARTWARMING_STORIES: 'heartwarming_stories',
+  /**
+   * Educational content with historical context
+   */
+  EDUCATIONAL_HISTORY: 'educational_history',
+  /**
+   * Concise, journalistic style
+   */
+  NEWS_BRIEF: 'news_brief'
+} as const
+
+/**
+ * Story framework for video generation
+ */
+export type VideoFramework =
+  | 'default'
+  | 'emotional_story'
+  | 'product_showcase'
+  | 'tutorial'
+  | 'engaging_conversational'
+  | 'kind_biography'
+  | 'hero_journey'
+  | 'dramatic_reveal'
+  | 'heartwarming_stories'
+  | 'educational_history'
+  | 'news_brief'
+
+/**
+ * Story framework for video generation
+ */
+export const VideoFramework = {
+  DEFAULT: 'default',
+  EMOTIONAL_STORY: 'emotional_story',
+  PRODUCT_SHOWCASE: 'product_showcase',
+  TUTORIAL: 'tutorial',
+  ENGAGING_CONVERSATIONAL: 'engaging_conversational',
+  KIND_BIOGRAPHY: 'kind_biography',
+  HERO_JOURNEY: 'hero_journey',
+  DRAMATIC_REVEAL: 'dramatic_reveal',
+  HEARTWARMING_STORIES: 'heartwarming_stories',
+  EDUCATIONAL_HISTORY: 'educational_history',
+  NEWS_BRIEF: 'news_brief'
+} as const
+
+/**
+ * Image style for Recraft model
+ */
+export type RecraftStyle =
+  | 'any'
+  | 'realistic_image'
+  | 'digital_illustration'
+  | 'realistic_image/b_and_w'
+  | 'realistic_image/hard_flash'
+  | 'realistic_image/hdr'
+  | 'realistic_image/natural_light'
+  | 'realistic_image/studio_portrait'
+  | 'realistic_image/enterprise'
+  | 'realistic_image/motion_blur'
+  | 'digital_illustration/pixel_art'
+  | 'digital_illustration/hand_drawn'
+  | 'digital_illustration/grain'
+  | 'digital_illustration/infantile_sketch'
+  | 'digital_illustration/2d_art_poster'
+  | 'digital_illustration/handmade_3d'
+  | 'digital_illustration/hand_drawn_outline'
+  | 'digital_illustration/engraving_color'
+  | 'digital_illustration/2d_art_poster_2'
+
+/**
+ * Image style for Recraft model
+ */
+export const RecraftStyle = {
+  /**
+   * Default style
+   */
+  ANY: 'any',
+  /**
+   * Realistic photography
+   */
+  REALISTIC_IMAGE: 'realistic_image',
+  /**
+   * Digital art and illustrations
+   */
+  DIGITAL_ILLUSTRATION: 'digital_illustration',
+  /**
+   * Black and white photography
+   */
+  REALISTIC_IMAGE_B_AND_W: 'realistic_image/b_and_w',
+  /**
+   * Hard flash photography
+   */
+  REALISTIC_IMAGE_HARD_FLASH: 'realistic_image/hard_flash',
+  /**
+   * HDR photography
+   */
+  REALISTIC_IMAGE_HDR: 'realistic_image/hdr',
+  /**
+   * Natural lighting photography
+   */
+  REALISTIC_IMAGE_NATURAL_LIGHT: 'realistic_image/natural_light',
+  /**
+   * Studio portrait photography
+   */
+  REALISTIC_IMAGE_STUDIO_PORTRAIT: 'realistic_image/studio_portrait',
+  /**
+   * Professional/corporate photography
+   */
+  REALISTIC_IMAGE_ENTERPRISE: 'realistic_image/enterprise',
+  /**
+   * Motion blur effect
+   */
+  REALISTIC_IMAGE_MOTION_BLUR: 'realistic_image/motion_blur',
+  /**
+   * Pixel art style
+   */
+  DIGITAL_ILLUSTRATION_PIXEL_ART: 'digital_illustration/pixel_art',
+  /**
+   * Hand-drawn illustration
+   */
+  DIGITAL_ILLUSTRATION_HAND_DRAWN: 'digital_illustration/hand_drawn',
+  /**
+   * Grainy illustration style
+   */
+  DIGITAL_ILLUSTRATION_GRAIN: 'digital_illustration/grain',
+  /**
+   * Child-like sketch style
+   */
+  DIGITAL_ILLUSTRATION_INFANTILE_SKETCH: 'digital_illustration/infantile_sketch',
+  /**
+   * 2D poster art
+   */
+  DIGITAL_ILLUSTRATION_2D_ART_POSTER: 'digital_illustration/2d_art_poster',
+  /**
+   * 3D-like illustration
+   */
+  DIGITAL_ILLUSTRATION_HANDMADE_3D: 'digital_illustration/handmade_3d',
+  /**
+   * Line art style
+   */
+  DIGITAL_ILLUSTRATION_HAND_DRAWN_OUTLINE: 'digital_illustration/hand_drawn_outline',
+  /**
+   * Color engraving style
+   */
+  DIGITAL_ILLUSTRATION_ENGRAVING_COLOR: 'digital_illustration/engraving_color',
+  /**
+   * Alternative 2D poster style
+   */
+  DIGITAL_ILLUSTRATION_2D_ART_POSTER_2: 'digital_illustration/2d_art_poster_2'
+} as const
+
+/**
+ * LoRA style for Flux model
+ */
+export type FluxLoraStyle =
+  | 'ghibsky-comic-book'
+  | 'colour-sketches'
+  | 'sketch-paint'
+  | '90s-anime'
+  | '2000s-crime-thrillers'
+  | 'xno-symbol-flux'
+
+/**
+ * LoRA style for Flux model
+ */
+export const FluxLoraStyle = {
+  /**
+   * GHIBSKY style painting (prompt prefix: GHIBSKY style painting,)
+   */
+  GHIBSKY_COMIC_BOOK: 'ghibsky-comic-book',
+  /**
+   * Colour Sketches Illustration (prompt prefix: illustration)
+   */
+  COLOUR_SKETCHES: 'colour-sketches',
+  /**
+   * Sketch Paint Illustration (prompt prefix: sk3tchpa1nt style illustration)
+   */
+  SKETCH_PAINT: 'sketch-paint',
+  /**
+   * 90s Anime Art (prompt prefix: 90s anime style,)
+   */
+  '90S_ANIME': '90s-anime',
+  /**
+   * 2000s Crime Thrillers (prompt prefix: ArsMovieStill, movie still from a gritty, high-contrast 2000s crime thriller movie,)
+   */
+  '2000S_CRIME_THRILLERS': '2000s-crime-thrillers',
+  /**
+   * XNO Symbol (prompt prefix: xno_symbol)
+   */
+  XNO_SYMBOL_FLUX: 'xno-symbol-flux'
+} as const
+
+/**
+ * Style for video captions
+ */
+export type CaptionStyle =
+  | 'default'
+  | 'minimal'
+  | 'neon'
+  | 'cinematic'
+  | 'fancy'
+  | 'tiktok'
+  | 'highlight'
+  | 'gradient'
+  | 'instagram'
+  | 'vida'
+  | 'manuscripts'
+
+/**
+ * Style for video captions
+ */
+export const CaptionStyle = {
+  DEFAULT: 'default',
+  MINIMAL: 'minimal',
+  NEON: 'neon',
+  CINEMATIC: 'cinematic',
+  FANCY: 'fancy',
+  TIKTOK: 'tiktok',
+  HIGHLIGHT: 'highlight',
+  GRADIENT: 'gradient',
+  INSTAGRAM: 'instagram',
+  VIDA: 'vida',
+  MANUSCRIPTS: 'manuscripts'
+} as const
+
+/**
+ * Output video quality
+ */
+export type VideoQuality = 'low' | 'medium' | 'high'
+
+/**
+ * Output video quality
+ */
+export const VideoQuality = {
+  LOW: 'low',
+  MEDIUM: 'medium',
+  HIGH: 'high'
+} as const
+
+/**
+ * Transition effect between scenes
+ */
+export type TransitionEffect = 'fade' | 'dissolve' | 'slide' | 'zoom' | 'none'
+
+/**
+ * Transition effect between scenes
+ */
+export const TransitionEffect = {
+  FADE: 'fade',
+  DISSOLVE: 'dissolve',
+  SLIDE: 'slide',
+  ZOOM: 'zoom',
+  NONE: 'none'
+} as const
+
+/**
+ * Voice ID for narration
+ */
+export type VoiceId =
+  | '9BWtsMINqrJLrRacOk9x'
+  | 'CwhRBWXzGAHq8TQ4Fs17'
+  | 'EXAVITQu4vr4xnSDxMaL'
+  | 'FGY2WhTYpPnrIDTdsKH5'
+  | 'IKne3meq5aSn9XLyUdCD'
+  | 'JBFqnCBsd6RMkjVDRZzb'
+  | 'N2lVS1w4EtoT3dr4eOWO'
+  | 'SAz9YHcvj6GT2YYXdXww'
+  | 'TX3LPaxmHKxFdv7VOQHJ'
+  | 'XB0fDUnXU5powFXDhCwa'
+  | 'Xb7hH8MSUJpSbSDYk0k2'
+  | 'XrExE9yKIg1WjnnlVkGX'
+  | 'bIHbv24MWmeRgasZH58o'
+  | 'cgSgspJ2msm6clMCkdW9'
+  | 'cjVigY5qzO86Huf0OWal'
+  | 'nPczCjzI2devNBz1zQrb'
+  | 'zWDA589rUKXuLnPRDtAG'
+  | 'KHCvMklQZZo0O30ERnVn'
+  | 'Nh2zY9kknu6z4pZy6FhD'
+  | 'YExhVa4bZONzeingloMX'
+
+/**
+ * Voice ID for narration
+ */
+export const VoiceId = {
+  /**
+   * Aria: Female, American, expressive (best for social media)
+   */
+  '9B_WTS_MI_NQR_J_LR_RAC_OK9X': '9BWtsMINqrJLrRacOk9x',
+  /**
+   * Roger: Male, American, confident (best for social media)
+   */
+  CWH_RBW_XZ_GA_HQ8TQ4FS17: 'CwhRBWXzGAHq8TQ4Fs17',
+  /**
+   * Sarah: Female, American, soft (best for news)
+   */
+  EXAVIT_QU4VR4XN_S_DX_MA_L: 'EXAVITQu4vr4xnSDxMaL',
+  /**
+   * Laura: Female, American, upbeat (best for social media)
+   */
+  FGY2_WH_T_YP_PNR_ID_TDS_KH5: 'FGY2WhTYpPnrIDTdsKH5',
+  /**
+   * Charlie: Male, Australian, natural (best for conversational)
+   */
+  I_KNE3MEQ5A_SN9X_LY_UD_CD: 'IKne3meq5aSn9XLyUdCD',
+  /**
+   * George: Male, British, warm (best for narration)
+   */
+  JB_FQN_CBSD6R_MKJ_VDR_ZZB: 'JBFqnCBsd6RMkjVDRZzb',
+  /**
+   * Callum: Male, Transatlantic, intense (best for characters)
+   */
+  N2L_VS1W4_ETO_T3DR4E_OWO: 'N2lVS1w4EtoT3dr4eOWO',
+  /**
+   * River: Female, American, confident (best for social media)
+   */
+  S_AZ9Y_HCVJ6GT2YY_XD_XWW: 'SAz9YHcvj6GT2YYXdXww',
+  /**
+   * Liam: Male, American, articulate (best for narration)
+   */
+  TX3L_PAXM_H_KX_FDV7VOQHJ: 'TX3LPaxmHKxFdv7VOQHJ',
+  /**
+   * Charlotte: Female, Swedish, seductive (best for characters)
+   */
+  XB0F_D_UN_XU5POW_FX_DH_CWA: 'XB0fDUnXU5powFXDhCwa',
+  /**
+   * Alice: Female, British, confident (best for news)
+   */
+  XB7H_H8MSU_JP_SB_SD_YK0K2: 'Xb7hH8MSUJpSbSDYk0k2',
+  /**
+   * Matilda: Female, American, friendly (best for narration)
+   */
+  XR_EX_E9Y_K_IG1_WJNNL_VK_GX: 'XrExE9yKIg1WjnnlVkGX',
+  /**
+   * Will: Male, American, friendly (best for social media)
+   */
+  B_I_HBV24M_WME_RGAS_ZH58O: 'bIHbv24MWmeRgasZH58o',
+  /**
+   * Jessica: Female, American, expressive (best for conversational)
+   */
+  CG_SGSP_J2MSM6CL_M_CKD_W9: 'cgSgspJ2msm6clMCkdW9',
+  /**
+   * Eric: Male, American, friendly (best for conversational)
+   */
+  CJ_VIG_Y5QZ_O86_HUF0O_WAL: 'cjVigY5qzO86Huf0OWal',
+  /**
+   * Brian: Male, American, deep (best for narration)
+   */
+  N_PCZ_CJZ_I2DEV_N_BZ1Z_QRB: 'nPczCjzI2devNBz1zQrb',
+  /**
+   * John: Male, American, wise (best for characters animation)
+   */
+  Z_WDA589R_UK_XU_LN_PR_DT_AG: 'zWDA589rUKXuLnPRDtAG',
+  /**
+   * Sara Martin: Female, Spanish, wise (best for informative educational)
+   */
+  KH_CV_MKL_QZ_ZO0O30E_RN_VN: 'KHCvMklQZZo0O30ERnVn',
+  /**
+   * David Martin: Male, Spanish, confident (best for narrative story)
+   */
+  NH2Z_Y9KKNU6Z4P_ZY6_FH_D: 'Nh2zY9kknu6z4pZy6FhD',
+  /**
+   * Juan Carlos: Male, Latin American, casual (best for conversational)
+   */
+  Y_EXH_VA4B_ZO_NZEINGLO_MX: 'YExhVa4bZONzeingloMX'
+} as const
+
+/**
+ * Background music track for video
+ */
+export type MusicTrack =
+  | 'video-creation/music/adventure/temple_of_treasures.mp3'
+  | 'video-creation/music/adventure/adventurous_intro.mp3'
+  | 'video-creation/music/ambient/gentle_ambient_loop.mp3'
+  | 'video-creation/music/ambient/serene_ambience.mp3'
+  | 'video-creation/music/ambient/soothing_ambience.mp3'
+  | 'video-creation/music/ambient/soothing_ambient_backdrop.mp3'
+  | 'video-creation/music/ambient/tranquil_ambience.mp3'
+  | 'video-creation/music/ambient/dreamscape.mp3'
+  | 'video-creation/music/ambient/belonging_resonance.mp3'
+  | 'video-creation/music/ambient/vivid_memories.mp3'
+  | 'video-creation/music/cinematic/cinematic_intro.mp3'
+  | 'video-creation/music/cinematic/cinematic_teaser.mp3'
+  | 'video-creation/music/cinematic/dramatic_cinematic_score.mp3'
+  | 'video-creation/music/cinematic/thriller_cinema_trailer.mp3'
+  | 'video-creation/music/cinematic/fractured_paintings.mp3'
+  | 'video-creation/music/cinematic/promise_of_tomorrow.mp3'
+  | 'video-creation/music/cinematic/spooky_orchestral_theme.mp3'
+  | 'video-creation/music/upbeat/light_upbeat_melody.mp3'
+  | 'video-creation/music/upbeat/puzzle_time.mp3'
+  | 'video-creation/music/upbeat/stomping_drums_rhythm.mp3'
+  | 'video-creation/music/upbeat/stomps_and_claps_rhythm_track.mp3'
+  | 'video-creation/music/news/news_theme.mp3'
+  | 'video-creation/music/vintage/burlesque_sweetheart.mp3'
+  | 'video-creation/music/other/highway_nocturne_national_sweetheart.mp3'
+  | 'video-creation/music/other/haptic_sensation.mp3'
+
+/**
+ * Background music track for video
+ */
+export const MusicTrack = {
+  /**
+   * Adventure theme
+   */
+  VIDEO_CREATION_MUSIC_ADVENTURE_TEMPLE_OF_TREASURES_MP3:
+    'video-creation/music/adventure/temple_of_treasures.mp3',
+  /**
+   * Short adventure intro
+   */
+  VIDEO_CREATION_MUSIC_ADVENTURE_ADVENTUROUS_INTRO_MP3:
+    'video-creation/music/adventure/adventurous_intro.mp3',
+  /**
+   * Gentle ambient music
+   */
+  VIDEO_CREATION_MUSIC_AMBIENT_GENTLE_AMBIENT_LOOP_MP3:
+    'video-creation/music/ambient/gentle_ambient_loop.mp3',
+  /**
+   * Serene ambient theme
+   */
+  VIDEO_CREATION_MUSIC_AMBIENT_SERENE_AMBIENCE_MP3:
+    'video-creation/music/ambient/serene_ambience.mp3',
+  /**
+   * Soothing ambient music
+   */
+  VIDEO_CREATION_MUSIC_AMBIENT_SOOTHING_AMBIENCE_MP3:
+    'video-creation/music/ambient/soothing_ambience.mp3',
+  /**
+   * Soothing ambient backdrop
+   */
+  VIDEO_CREATION_MUSIC_AMBIENT_SOOTHING_AMBIENT_BACKDROP_MP3:
+    'video-creation/music/ambient/soothing_ambient_backdrop.mp3',
+  /**
+   * Tranquil ambient theme
+   */
+  VIDEO_CREATION_MUSIC_AMBIENT_TRANQUIL_AMBIENCE_MP3:
+    'video-creation/music/ambient/tranquil_ambience.mp3',
+  /**
+   * Dreamlike ambient
+   */
+  VIDEO_CREATION_MUSIC_AMBIENT_DREAMSCAPE_MP3: 'video-creation/music/ambient/dreamscape.mp3',
+  /**
+   * Emotional ambient
+   */
+  VIDEO_CREATION_MUSIC_AMBIENT_BELONGING_RESONANCE_MP3:
+    'video-creation/music/ambient/belonging_resonance.mp3',
+  /**
+   * Memory-evoking ambient
+   */
+  VIDEO_CREATION_MUSIC_AMBIENT_VIVID_MEMORIES_MP3:
+    'video-creation/music/ambient/vivid_memories.mp3',
+  /**
+   * Cinematic introduction
+   */
+  VIDEO_CREATION_MUSIC_CINEMATIC_CINEMATIC_INTRO_MP3:
+    'video-creation/music/cinematic/cinematic_intro.mp3',
+  /**
+   * Cinematic teaser music
+   */
+  VIDEO_CREATION_MUSIC_CINEMATIC_CINEMATIC_TEASER_MP3:
+    'video-creation/music/cinematic/cinematic_teaser.mp3',
+  /**
+   * Dramatic cinematic
+   */
+  VIDEO_CREATION_MUSIC_CINEMATIC_DRAMATIC_CINEMATIC_SCORE_MP3:
+    'video-creation/music/cinematic/dramatic_cinematic_score.mp3',
+  /**
+   * Intense thriller
+   */
+  VIDEO_CREATION_MUSIC_CINEMATIC_THRILLER_CINEMA_TRAILER_MP3:
+    'video-creation/music/cinematic/thriller_cinema_trailer.mp3',
+  /**
+   * Artistic cinematic
+   */
+  VIDEO_CREATION_MUSIC_CINEMATIC_FRACTURED_PAINTINGS_MP3:
+    'video-creation/music/cinematic/fractured_paintings.mp3',
+  /**
+   * Hopeful cinematic
+   */
+  VIDEO_CREATION_MUSIC_CINEMATIC_PROMISE_OF_TOMORROW_MP3:
+    'video-creation/music/cinematic/promise_of_tomorrow.mp3',
+  /**
+   * Spooky orchestral
+   */
+  VIDEO_CREATION_MUSIC_CINEMATIC_SPOOKY_ORCHESTRAL_THEME_MP3:
+    'video-creation/music/cinematic/spooky_orchestral_theme.mp3',
+  /**
+   * Light upbeat
+   */
+  VIDEO_CREATION_MUSIC_UPBEAT_LIGHT_UPBEAT_MELODY_MP3:
+    'video-creation/music/upbeat/light_upbeat_melody.mp3',
+  /**
+   * Playful puzzle theme
+   */
+  VIDEO_CREATION_MUSIC_UPBEAT_PUZZLE_TIME_MP3: 'video-creation/music/upbeat/puzzle_time.mp3',
+  /**
+   * Rhythmic drums
+   */
+  VIDEO_CREATION_MUSIC_UPBEAT_STOMPING_DRUMS_RHYTHM_MP3:
+    'video-creation/music/upbeat/stomping_drums_rhythm.mp3',
+  /**
+   * Stomps and claps
+   */
+  VIDEO_CREATION_MUSIC_UPBEAT_STOMPS_AND_CLAPS_RHYTHM_TRACK_MP3:
+    'video-creation/music/upbeat/stomps_and_claps_rhythm_track.mp3',
+  /**
+   * Professional news theme
+   */
+  VIDEO_CREATION_MUSIC_NEWS_NEWS_THEME_MP3: 'video-creation/music/news/news_theme.mp3',
+  /**
+   * Vintage burlesque
+   */
+  VIDEO_CREATION_MUSIC_VINTAGE_BURLESQUE_SWEETHEART_MP3:
+    'video-creation/music/vintage/burlesque_sweetheart.mp3',
+  /**
+   * Highway nocturne
+   */
+  VIDEO_CREATION_MUSIC_OTHER_HIGHWAY_NOCTURNE_NATIONAL_SWEETHEART_MP3:
+    'video-creation/music/other/highway_nocturne_national_sweetheart.mp3',
+  /**
+   * Haptic sensation theme
+   */
+  VIDEO_CREATION_MUSIC_OTHER_HAPTIC_SENSATION_MP3: 'video-creation/music/other/haptic_sensation.mp3'
+} as const
+
+/**
  * Controls randomness (0 to 2).
  */
 export type TemperatureParam = number
@@ -969,6 +1536,227 @@ export type BalanceResponses = {
 }
 
 export type BalanceResponse = BalanceResponses[keyof BalanceResponses]
+
+export type GenerateVideoData = {
+  body: unknown & {
+    /**
+     * The prompt for video generation (mutually exclusive with script)
+     */
+    prompt?: string
+    script?: ScriptStyle
+    framework: VideoFramework
+    /**
+     * Target length in words
+     */
+    targetLengthInWords: number
+    /**
+     * Specific instructions for the image generation engine (e.g., 'Warm lighting' or 'Make the first image very impactful')
+     */
+    directorNotes?: string
+    /**
+     * Configuration for image generation
+     */
+    imageConfig: {
+      /**
+       * Image generation model to use
+       */
+      model?: 'recraft' | 'flux_lora'
+      style?: RecraftStyle
+      /**
+       * Configuration for Flux LoRA model (only used with flux_lora model)
+       */
+      loraConfig?: {
+        loraSlug?: FluxLoraStyle
+      }
+    }
+    voice: VoiceId
+    /**
+     * Whether to show captions on the video
+     */
+    captionsShow: boolean
+    captionsStyle: CaptionStyle
+    /**
+     * Visual effects configuration
+     */
+    effects: {
+      transition?: TransitionEffect
+      /**
+       * Whether to use floating effect on images
+       */
+      floating?: boolean
+    }
+    quality: VideoQuality
+    /**
+     * Motion configuration for images
+     */
+    motion: {
+      /**
+       * Whether motion effects are enabled
+       */
+      enabled?: boolean
+      /**
+       * Strength of motion effect (1-10)
+       */
+      strength?: number
+    }
+    music: MusicTrack
+  }
+  path?: never
+  query?: never
+  url: '/v1/video'
+}
+
+export type GenerateVideoErrors = {
+  /**
+   * Invalid request
+   */
+  400: {
+    /**
+     * Details about the invalid request
+     */
+    error?: string
+  }
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Authentication error
+     */
+    error?: string
+  }
+  /**
+   * Server error
+   */
+  500: {
+    /**
+     * Server-side error details
+     */
+    error?: string
+  }
+}
+
+export type GenerateVideoError = GenerateVideoErrors[keyof GenerateVideoErrors]
+
+export type GenerateVideoResponses = {
+  /**
+   * Successful video generation request
+   */
+  200: {
+    /**
+     * Unique identifier for the video generation run
+     */
+    runId: string
+    /**
+     * Unique identifier for the project
+     */
+    projectId: string
+    /**
+     * Current status of video generation
+     */
+    status?: string
+    /**
+     * Cost of the video generation
+     */
+    cost?: number
+    /**
+     * Payment method used
+     */
+    paymentSource?: string
+  }
+}
+
+export type GenerateVideoResponse = GenerateVideoResponses[keyof GenerateVideoResponses]
+
+export type CheckVideoStatusData = {
+  body?: never
+  path?: never
+  query: {
+    /**
+     * The run ID from the generation request
+     */
+    runId: string
+    /**
+     * The project ID from the generation request
+     */
+    projectId: string
+    /**
+     * The cost of the video generation
+     */
+    cost?: number
+    /**
+     * The payment source used
+     */
+    paymentSource?: string
+  }
+  url: '/v1/video/status'
+}
+
+export type CheckVideoStatusErrors = {
+  /**
+   * Invalid request
+   */
+  400: {
+    /**
+     * Details about the invalid request
+     */
+    error?: string
+  }
+  /**
+   * Unauthorized
+   */
+  401: {
+    /**
+     * Authentication error
+     */
+    error?: string
+  }
+  /**
+   * Server error
+   */
+  500: {
+    /**
+     * Server-side error details
+     */
+    error?: string
+  }
+}
+
+export type CheckVideoStatusError = CheckVideoStatusErrors[keyof CheckVideoStatusErrors]
+
+export type CheckVideoStatusResponses = {
+  /**
+   * Successful status check
+   */
+  200: {
+    /**
+     * Current status of the video generation
+     */
+    status?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED'
+    data?: {
+      /**
+       * Whether the video generation is complete
+       */
+      isCompleted?: boolean
+      /**
+       * Whether the video generation was successful
+       */
+      isSuccess?: boolean
+      output?: {
+        /**
+         * URL of the completed video
+         */
+        url?: string
+      }
+      /**
+       * Additional information or error message
+       */
+      message?: string
+    }
+  }
+}
+
+export type CheckVideoStatusResponse = CheckVideoStatusResponses[keyof CheckVideoStatusResponses]
 
 export type ClientOptions = {
   baseUrl: 'https://nano-gpt.com/api' | (string & {})

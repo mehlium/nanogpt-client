@@ -1,23 +1,25 @@
 import { Client, createClient } from '@hey-api/client-fetch'
 import {
   balance,
+  checkVideoStatus,
   createChatCompletion,
   generateImage,
+  generateVideo,
   models,
   Options
 } from './openapi-client/sdk.gen.js'
 import {
-  BalanceData,
   ChatModel,
+  CheckVideoStatusData,
   CreateChatCompletionData,
   CreateChatCompletionResponse,
   GenerateImageData,
-  ImageModel,
-  ModelsData
+  GenerateVideoData,
+  ImageModel
 } from './openapi-client/types.gen.js'
 import { client } from './openapi-client/client.gen.ts'
 import { bodyToAsyncChatCompletionGenerator, bodyToAsyncStringGenerator } from './utils.ts'
-import { APIClient, Chat, Image, NanoGPTClientConfig } from './types.ts'
+import { APIClient, Chat, Image, NanoGPTClientConfig, Video } from './types.ts'
 
 export class NanoGPTClient implements APIClient {
   client: Client
@@ -117,7 +119,24 @@ export class NanoGPTClient implements APIClient {
         })
     }
   }
-
+  video(): Video {
+    return {
+      advanced: <ThrowOnError extends boolean = false>(
+        options: Options<GenerateVideoData, ThrowOnError>
+      ) =>
+        generateVideo({
+          ...options,
+          client: options.client || this.client
+        }),
+      status: <ThrowOnError extends boolean = false>(
+        options: Options<CheckVideoStatusData, ThrowOnError>
+      ) =>
+        checkVideoStatus({
+          ...options,
+          client: options.client || this.client
+        })
+    }
+  }
   models() {
     return models({
       client: this.client
