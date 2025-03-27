@@ -1,12 +1,18 @@
 import { Client, Options, RequestResult } from '@hey-api/client-fetch'
 import {
   ChatModel,
+  CheckVideoStatusData,
+  CheckVideoStatusError,
+  CheckVideoStatusResponse,
   CreateChatCompletionData,
   CreateChatCompletionError,
   CreateChatCompletionResponse,
   GenerateImageData,
   GenerateImageError,
   GenerateImageResponse,
+  GenerateVideoData,
+  GenerateVideoError,
+  GenerateVideoResponse,
   ImageModel
 } from './index.ts'
 
@@ -42,8 +48,17 @@ export interface Image {
     options: Options<GenerateImageData, ThrowOnError>
   ) => RequestResult<GenerateImageResponse, GenerateImageError, ThrowOnError>
 }
+export interface Video {
+  status: <ThrowOnError extends boolean = false>(
+    options: Options<CheckVideoStatusData, ThrowOnError>
+  ) => RequestResult<CheckVideoStatusResponse, CheckVideoStatusError, ThrowOnError>
+  advanced: <ThrowOnError extends boolean = false>(
+    options: Options<GenerateVideoData, ThrowOnError>
+  ) => RequestResult<GenerateVideoResponse, GenerateVideoError, ThrowOnError>
+}
 
 export interface APIClient {
   chat: () => Chat
   image: () => Image
+  video: () => Video
 }

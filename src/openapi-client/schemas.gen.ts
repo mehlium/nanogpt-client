@@ -372,3 +372,255 @@ export const NanoAddressSchema = {
   type: 'string',
   description: 'Nano address'
 } as const
+
+export const ScriptStyleSchema = {
+  type: 'string',
+  description: 'A fully-written script to skip AI script generation (takes precedence over prompt)',
+  enum: [
+    'default',
+    'engaging_conversational',
+    'kind_biography',
+    'hero_journey',
+    'emotional_story',
+    'dramatic_reveal',
+    'heartwarming_stories',
+    'educational_history',
+    'news_brief'
+  ],
+  'x-enum-descriptions': [
+    'Classic story with traditional narrative structure',
+    'Casual, dialogue-rich storytelling',
+    'Biographical style with personal touch',
+    "Epic narrative following hero's journey structure",
+    'Emotionally resonant narrative',
+    'Story with dramatic twists and reveals',
+    'Uplifting, feel-good narratives',
+    'Educational content with historical context',
+    'Concise, journalistic style'
+  ]
+} as const
+
+export const VideoFrameworkSchema = {
+  type: 'string',
+  description: 'Story framework for video generation',
+  enum: [
+    'default',
+    'emotional_story',
+    'product_showcase',
+    'tutorial',
+    'engaging_conversational',
+    'kind_biography',
+    'hero_journey',
+    'dramatic_reveal',
+    'heartwarming_stories',
+    'educational_history',
+    'news_brief'
+  ]
+} as const
+
+export const RecraftStyleSchema = {
+  type: 'string',
+  description: 'Image style for Recraft model',
+  enum: [
+    'any',
+    'realistic_image',
+    'digital_illustration',
+    'realistic_image/b_and_w',
+    'realistic_image/hard_flash',
+    'realistic_image/hdr',
+    'realistic_image/natural_light',
+    'realistic_image/studio_portrait',
+    'realistic_image/enterprise',
+    'realistic_image/motion_blur',
+    'digital_illustration/pixel_art',
+    'digital_illustration/hand_drawn',
+    'digital_illustration/grain',
+    'digital_illustration/infantile_sketch',
+    'digital_illustration/2d_art_poster',
+    'digital_illustration/handmade_3d',
+    'digital_illustration/hand_drawn_outline',
+    'digital_illustration/engraving_color',
+    'digital_illustration/2d_art_poster_2'
+  ],
+  'x-enum-descriptions': [
+    'Default style',
+    'Realistic photography',
+    'Digital art and illustrations',
+    'Black and white photography',
+    'Hard flash photography',
+    'HDR photography',
+    'Natural lighting photography',
+    'Studio portrait photography',
+    'Professional/corporate photography',
+    'Motion blur effect',
+    'Pixel art style',
+    'Hand-drawn illustration',
+    'Grainy illustration style',
+    'Child-like sketch style',
+    '2D poster art',
+    '3D-like illustration',
+    'Line art style',
+    'Color engraving style',
+    'Alternative 2D poster style'
+  ]
+} as const
+
+export const FluxLoraStyleSchema = {
+  type: 'string',
+  description: 'LoRA style for Flux model',
+  enum: [
+    'ghibsky-comic-book',
+    'colour-sketches',
+    'sketch-paint',
+    '90s-anime',
+    '2000s-crime-thrillers',
+    'xno-symbol-flux'
+  ],
+  'x-enum-descriptions': [
+    'GHIBSKY style painting (prompt prefix: GHIBSKY style painting,)',
+    'Colour Sketches Illustration (prompt prefix: illustration)',
+    'Sketch Paint Illustration (prompt prefix: sk3tchpa1nt style illustration)',
+    '90s Anime Art (prompt prefix: 90s anime style,)',
+    '2000s Crime Thrillers (prompt prefix: ArsMovieStill, movie still from a gritty, high-contrast 2000s crime thriller movie,)',
+    'XNO Symbol (prompt prefix: xno_symbol)'
+  ]
+} as const
+
+export const CaptionStyleSchema = {
+  type: 'string',
+  description: 'Style for video captions',
+  enum: [
+    'default',
+    'minimal',
+    'neon',
+    'cinematic',
+    'fancy',
+    'tiktok',
+    'highlight',
+    'gradient',
+    'instagram',
+    'vida',
+    'manuscripts'
+  ]
+} as const
+
+export const VideoQualitySchema = {
+  type: 'string',
+  description: 'Output video quality',
+  default: 'medium',
+  enum: ['low', 'medium', 'high']
+} as const
+
+export const TransitionEffectSchema = {
+  type: 'string',
+  description: 'Transition effect between scenes',
+  enum: ['fade', 'dissolve', 'slide', 'zoom', 'none']
+} as const
+
+export const VoiceIDSchema = {
+  type: 'string',
+  description: 'Voice ID for narration',
+  enum: [
+    '9BWtsMINqrJLrRacOk9x',
+    'CwhRBWXzGAHq8TQ4Fs17',
+    'EXAVITQu4vr4xnSDxMaL',
+    'FGY2WhTYpPnrIDTdsKH5',
+    'IKne3meq5aSn9XLyUdCD',
+    'JBFqnCBsd6RMkjVDRZzb',
+    'N2lVS1w4EtoT3dr4eOWO',
+    'SAz9YHcvj6GT2YYXdXww',
+    'TX3LPaxmHKxFdv7VOQHJ',
+    'XB0fDUnXU5powFXDhCwa',
+    'Xb7hH8MSUJpSbSDYk0k2',
+    'XrExE9yKIg1WjnnlVkGX',
+    'bIHbv24MWmeRgasZH58o',
+    'cgSgspJ2msm6clMCkdW9',
+    'cjVigY5qzO86Huf0OWal',
+    'nPczCjzI2devNBz1zQrb',
+    'zWDA589rUKXuLnPRDtAG',
+    'KHCvMklQZZo0O30ERnVn',
+    'Nh2zY9kknu6z4pZy6FhD',
+    'YExhVa4bZONzeingloMX'
+  ],
+  'x-enum-descriptions': [
+    'Aria: Female, American, expressive (best for social media)',
+    'Roger: Male, American, confident (best for social media)',
+    'Sarah: Female, American, soft (best for news)',
+    'Laura: Female, American, upbeat (best for social media)',
+    'Charlie: Male, Australian, natural (best for conversational)',
+    'George: Male, British, warm (best for narration)',
+    'Callum: Male, Transatlantic, intense (best for characters)',
+    'River: Female, American, confident (best for social media)',
+    'Liam: Male, American, articulate (best for narration)',
+    'Charlotte: Female, Swedish, seductive (best for characters)',
+    'Alice: Female, British, confident (best for news)',
+    'Matilda: Female, American, friendly (best for narration)',
+    'Will: Male, American, friendly (best for social media)',
+    'Jessica: Female, American, expressive (best for conversational)',
+    'Eric: Male, American, friendly (best for conversational)',
+    'Brian: Male, American, deep (best for narration)',
+    'John: Male, American, wise (best for characters animation)',
+    'Sara Martin: Female, Spanish, wise (best for informative educational)',
+    'David Martin: Male, Spanish, confident (best for narrative story)',
+    'Juan Carlos: Male, Latin American, casual (best for conversational)'
+  ]
+} as const
+
+export const MusicTrackSchema = {
+  type: 'string',
+  description: 'Background music track for video',
+  enum: [
+    'video-creation/music/adventure/temple_of_treasures.mp3',
+    'video-creation/music/adventure/adventurous_intro.mp3',
+    'video-creation/music/ambient/gentle_ambient_loop.mp3',
+    'video-creation/music/ambient/serene_ambience.mp3',
+    'video-creation/music/ambient/soothing_ambience.mp3',
+    'video-creation/music/ambient/soothing_ambient_backdrop.mp3',
+    'video-creation/music/ambient/tranquil_ambience.mp3',
+    'video-creation/music/ambient/dreamscape.mp3',
+    'video-creation/music/ambient/belonging_resonance.mp3',
+    'video-creation/music/ambient/vivid_memories.mp3',
+    'video-creation/music/cinematic/cinematic_intro.mp3',
+    'video-creation/music/cinematic/cinematic_teaser.mp3',
+    'video-creation/music/cinematic/dramatic_cinematic_score.mp3',
+    'video-creation/music/cinematic/thriller_cinema_trailer.mp3',
+    'video-creation/music/cinematic/fractured_paintings.mp3',
+    'video-creation/music/cinematic/promise_of_tomorrow.mp3',
+    'video-creation/music/cinematic/spooky_orchestral_theme.mp3',
+    'video-creation/music/upbeat/light_upbeat_melody.mp3',
+    'video-creation/music/upbeat/puzzle_time.mp3',
+    'video-creation/music/upbeat/stomping_drums_rhythm.mp3',
+    'video-creation/music/upbeat/stomps_and_claps_rhythm_track.mp3',
+    'video-creation/music/news/news_theme.mp3',
+    'video-creation/music/vintage/burlesque_sweetheart.mp3',
+    'video-creation/music/other/highway_nocturne_national_sweetheart.mp3',
+    'video-creation/music/other/haptic_sensation.mp3'
+  ],
+  'x-enum-descriptions': [
+    'Adventure theme',
+    'Short adventure intro',
+    'Gentle ambient music',
+    'Serene ambient theme',
+    'Soothing ambient music',
+    'Soothing ambient backdrop',
+    'Tranquil ambient theme',
+    'Dreamlike ambient',
+    'Emotional ambient',
+    'Memory-evoking ambient',
+    'Cinematic introduction',
+    'Cinematic teaser music',
+    'Dramatic cinematic',
+    'Intense thriller',
+    'Artistic cinematic',
+    'Hopeful cinematic',
+    'Spooky orchestral',
+    'Light upbeat',
+    'Playful puzzle theme',
+    'Rhythmic drums',
+    'Stomps and claps',
+    'Professional news theme',
+    'Vintage burlesque',
+    'Highway nocturne',
+    'Haptic sensation theme'
+  ]
+} as const

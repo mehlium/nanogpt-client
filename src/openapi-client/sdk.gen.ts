@@ -13,7 +13,13 @@ import type {
   ModelsError,
   BalanceData,
   BalanceResponse,
-  BalanceError
+  BalanceError,
+  GenerateVideoData,
+  GenerateVideoResponse,
+  GenerateVideoError,
+  CheckVideoStatusData,
+  CheckVideoStatusResponse,
+  CheckVideoStatusError
 } from './types.gen.js'
 import { client as _heyApiClient } from './client.gen.js'
 
@@ -126,6 +132,56 @@ export const balance = <ThrowOnError extends boolean = false>(
       }
     ],
     url: '/check-nano-balance',
+    ...options
+  })
+}
+
+/**
+ * Generate a video
+ * Create a video based on the provided prompt or script and parameters
+ */
+export const generateVideo = <ThrowOnError extends boolean = false>(
+  options: Options<GenerateVideoData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).post<
+    GenerateVideoResponse,
+    GenerateVideoError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'x-api-key',
+        type: 'apiKey'
+      }
+    ],
+    url: '/v1/video',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers
+    }
+  })
+}
+
+/**
+ * Check video generation status
+ * Check the status of a previously initiated video generation request
+ */
+export const checkVideoStatus = <ThrowOnError extends boolean = false>(
+  options: Options<CheckVideoStatusData, ThrowOnError>
+) => {
+  return (options.client ?? _heyApiClient).get<
+    CheckVideoStatusResponse,
+    CheckVideoStatusError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: 'x-api-key',
+        type: 'apiKey'
+      }
+    ],
+    url: '/v1/video/status',
     ...options
   })
 }

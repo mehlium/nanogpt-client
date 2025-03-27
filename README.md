@@ -101,6 +101,55 @@ import { NanoGPTClient } from 'nanogpt-client'
 })()
 ```
 
+### Video
+
+#### Generate and read status
+
+```javascript
+import { NanoGPTClient } from 'nanogpt-client'
+;(async () => {
+  const nano = new NanoGPTClient({
+    apiKey: '<NanoGPT API Key>'
+  })
+
+  /** Generate video */
+  const { data: generateData } = await nano.video().advanced({
+    body: {
+      prompt: 'Cat with glasses',
+      framework: 'default',
+      targetLengthInWords: 10,
+      imageConfig: {
+        model: 'recraft',
+        style: 'any',
+        loraConfig: undefined
+      },
+      voice: '9BWtsMINqrJLrRacOk9x',
+      captionsShow: false,
+      captionsStyle: 'default',
+      effects: {
+        transition: undefined,
+        floating: undefined
+      },
+      quality: 'high',
+      motion: {
+        enabled: undefined,
+        strength: undefined
+      },
+      music: 'video-creation/music/adventure/temple_of_treasures.mp3'
+    }
+  })
+
+  /** Check status */
+  const { data: statusData } = await nano.video().status({
+    query: {
+      runId: generateData.runId,
+      projectId: generateData.projectId
+    }
+  })
+  console.log(statusData)
+})()
+```
+
 ## Contributing
 
 Please consult [CONTRIBUTING](./.github/CONTRIBUTING.md) for guidelines on contributing to this project.
