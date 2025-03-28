@@ -1,5 +1,5 @@
 {
-  "name": "nanogpt-client",
+  "name": "@mehlium/nanogpt-client",
   "version": "1.0.0",
   "description": "Client for the NanoGPT API",
   "types": "dist/index.d.ts",
@@ -55,13 +55,13 @@
     "llm",
     "chatgpt"
   ],
-  "homepage": "https://github.com/aspic/nanogpt-client",
+  "homepage": "https://github.com/mehlium/nanogpt-client",
   "bugs": {
-    "url": "https://github.com/aspic/nanogpt-client/issues"
+    "url": "https://github.com/mehlium/nanogpt-client/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aspic/nanogpt-client.git"
+    "url": "https://github.com/mehlium/nanogpt-client.git"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",

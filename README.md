@@ -1,7 +1,7 @@
 # NanoGPT Client
 
-![NPM Version](https://img.shields.io/npm/v/nanogpt-client)
-![GitHub branch check runs](https://img.shields.io/github/check-runs/aspic/nanogpt-client/main)
+![NPM Version](https://img.shields.io/npm/v/@mehlium/nanogpt-client)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/mehlium/nanogpt-client/main)
 
 An unofficial implementation of the [NanoGPT API](https://nano-gpt.com/api). This library aims to provide
 a Typescript client for both browser and node environments. It's built on the inferred [OpenAPI spec](./openapi.yaml).
@@ -11,7 +11,7 @@ a Typescript client for both browser and node environments. It's built on the in
 ## Install
 
 ```bash
-npm install nanogpt-client
+npm install @mehlium/nanogpt-client
 ```
 
 ## How to use
@@ -21,7 +21,7 @@ npm install nanogpt-client
 #### Simple chat
 
 ```javascript
-import { NanoGPTClient } from 'nanogpt-client'
+import { NanoGPTClient } from '@mehlium/nanogpt-client'
 ;(async () => {
   const nano = new NanoGPTClient({
     apiKey: '<NanoGPT API Key>'
@@ -34,7 +34,7 @@ import { NanoGPTClient } from 'nanogpt-client'
 #### Streaming chat
 
 ```javascript
-import { NanoGPTClient } from 'nanogpt-client'
+import { NanoGPTClient } from '@mehlium/nanogpt-client'
 ;(async () => {
   const nano = new NanoGPTClient({
     apiKey: '<NanoGPT API Key>'
@@ -49,7 +49,7 @@ import { NanoGPTClient } from 'nanogpt-client'
 #### Send an image to the model
 
 ```javascript
-import { NanoGPTClient } from 'nanogpt-client'
+import { NanoGPTClient } from '@mehlium/nanogpt-client'
 import fs from 'node:fs'
 
 const imagePath = './image-to-describe.png'
@@ -95,7 +95,7 @@ const base64Image = fs.readFileSync(imagePath, 'base64')
 #### Simple image
 
 ```javascript
-import { NanoGPTClient } from 'nanogpt-client'
+import { NanoGPTClient } from '@mehlium/nanogpt-client'
 ;(async () => {
   const nano = new NanoGPTClient({
     apiKey: '<NanoGPT API Key>'
@@ -109,7 +109,7 @@ import { NanoGPTClient } from 'nanogpt-client'
 #### Generate and read status
 
 ```javascript
-import { NanoGPTClient } from 'nanogpt-client'
+import { NanoGPTClient } from '@mehlium/nanogpt-client'
 ;(async () => {
   const nano = new NanoGPTClient({
     apiKey: '<NanoGPT API Key>'
