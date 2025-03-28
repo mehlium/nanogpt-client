@@ -1,5 +1,22 @@
 # nanogpt-client
 
+## 1.0.0
+
+### Major Changes
+
+- fcbb987: First major release of client since it supports ~most of the NanoGPT API now.
+
+  No breaking changes.
+
+### Minor Changes
+
+- 63a9b8a: Updates models
+- 33647ca: Adds video support
+
+### Patch Changes
+
+- 205328c: Adds rudimentary fix-imports script
+
 ## 0.7.0
 
 ### Minor Changes
