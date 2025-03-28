@@ -1,5 +1,11 @@
 # nanogpt-client
 
+## 1.0.1
+
+### Patch Changes
+
+- 96b551b: Updates package name before final release
+
 ## 1.0.0
 
 ### Major Changes
