@@ -1,5 +1,5 @@
 ---
-'nanogpt-client': patch
+'@mehlium/nanogpt-client': patch
 ---
 
 Release new registry
