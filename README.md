@@ -1,7 +1,7 @@
+# NanoGPT Client
+
 ![NPM Version](https://img.shields.io/npm/v/nanogpt-client)
 ![GitHub branch check runs](https://img.shields.io/github/check-runs/aspic/nanogpt-client/main)
-
-# NanoGPT Client
 
 An unofficial implementation of the [NanoGPT API](https://nano-gpt.com/api). This library aims to provide
 a Typescript client for both browser and node environments. It's built on the inferred [OpenAPI spec](./openapi.yaml).
