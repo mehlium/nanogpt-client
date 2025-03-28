@@ -1,5 +1,11 @@
 # nanogpt-client
 
+## 1.0.2
+
+### Patch Changes
+
+- fa68797: Release new registry
+
 ## 1.0.1
 
 ### Patch Changes
