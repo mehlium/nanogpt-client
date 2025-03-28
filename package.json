@@ -49,7 +49,11 @@
   },
   "license": "Apache-2.0",
   "keywords": [
-    ""
+    "nanocurrency",
+    "nano",
+    "ai",
+    "llm",
+    "chatgpt"
   ],
   "homepage": "https://github.com/aspic/nanogpt-client",
   "bugs": {
