@@ -86,6 +86,6 @@
     ]
   },
   "dependencies": {
-    "@hey-api/client-fetch": "^0.8.3"
+    "@hey-api/client-fetch": "^0.10.0"
   }
 }
